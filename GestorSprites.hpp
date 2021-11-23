@@ -16,9 +16,12 @@ class Sprite
     // Nombre del sprite
     std::string nombre;
 
+    // Puntero hacia la textura donde se encuentra el sprite
+    Texture2D *textura;
+
   public:
 
-    Sprite(Rectangle _espacio, std::string _nombre);
+    Sprite(Rectangle _espacio, std::string _nombre, Texture2D *_textura);
 
     ~Sprite();
 
@@ -46,7 +49,7 @@ class GestorSprites
     void generarSprites();
 
     // Insertar un sprite
-    void insertar(Rectangle rect, std::string nombre);
+    void insertar(Rectangle rect, std::string nombre, Texture2D *textura);
 
     // Obtener un sprite
     Sprite *retSprite(std::string nombre);

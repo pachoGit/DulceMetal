@@ -1,6 +1,10 @@
 #include "Motor.hpp"
 
-Motor::Motor() {}
+Motor::Motor()
+{
+    gTexturas = nullptr;
+    gSprites = nullptr;
+}
 
 Motor::~Motor() {}
 
