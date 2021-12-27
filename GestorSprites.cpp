@@ -1,7 +1,7 @@
 #include "GestorSprites.hpp"
 #include "Motor.hpp"
 
-Sprite::Sprite(Rectangle _espacio, std::string _nombre, Texture2D *_textura)
+Sprite::Sprite(Rectangle _espacio, std::string _nombre, Texture2D _textura)
 {
     espacio = _espacio;
     nombre = _nombre;
@@ -12,12 +12,12 @@ Sprite::~Sprite() {}
 
 void Sprite::dibujar()
 {
-    DrawTextureRec(*textura, espacio, (Vector2) {0.f, 0.f}, RAYWHITE);
+    DrawTextureRec(textura, espacio, (Vector2) {0.f, 0.f}, RAYWHITE);
 }
 
 void Sprite::dibujar(Vector2 posicion)
 {
-    DrawTextureRec(*textura, espacio, posicion, RAYWHITE);
+    DrawTextureRec(textura, espacio, posicion, RAYWHITE);
 }
 
 // Gestor de sprites
@@ -37,13 +37,13 @@ GestorSprites::~GestorSprites()
 void GestorSprites::generarSprites()
 {
     Texture2D tprincipal = Motor::retMotor().retGestorTexturas()->retTextura("principal");
-    insertar((Rectangle){5.f, 0.f, 95.f, 180.f}, "auto1", &tprincipal);
-    insertar((Rectangle){1.f, 185.f, 21.f, 10.f}, "bala1", &tprincipal);
+    insertar((Rectangle){5.f, 0.f, 95.f, 180.f}, "auto1", tprincipal);
+    insertar((Rectangle){1.f, 185.f, 21.f, 10.f}, "bala1", tprincipal);
 }
 
-void GestorSprites::insertar(Rectangle rect, std::string nombre, Texture2D *textura)
+void GestorSprites::insertar(Rectangle espacio, std::string nombre, Texture2D textura)
 {
-    sprites.push_back(new Sprite(rect, nombre, textura));
+    sprites.push_back(new Sprite(espacio, nombre, textura));
 }
 
 Sprite *GestorSprites::retSprite(std::string nombre)
@@ -54,4 +54,8 @@ Sprite *GestorSprites::retSprite(std::string nombre)
     return nullptr;
 }
 
-
+Sprite *GestorSprites::CrearSprite(std::string nombre)
+{
+    Sprite *actual = retSprite(nombre);
+    return (actual ? new Sprite(actual->espacio, actual->nombre, actual->textura) : nullptr);
+}

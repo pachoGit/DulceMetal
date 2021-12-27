@@ -5,6 +5,7 @@
 #include "Motor.hpp"
 #include "GestorTexturas.hpp"
 #include "GestorSprites.hpp"
+#include "Objeto.hpp"
 
 void verRect(Rectangle rect)
 {
@@ -23,29 +24,19 @@ int main()
     motor.retGestorTexturas()->cargarTexturas();
     motor.retGestorSprites()->generarSprites();
 
-    //Texture2D t = motor.retGestorTexturas()->retTextura("principal");
+    Texture2D t = motor.retGestorTexturas()->retTextura("principal");
 
-    //Sprite *s3 = CrearSprite("nombreSprite", "nombreTextura");
+    Objeto *o1 = new Objeto((Vector2){0.f, 0.f});
 
-    Sprite *s1 = motor.retGestorSprites()->retSprite("auto1");
-    std::cout << "Espacio de Sprite 1: ";
-    verRect(s1->espacio);
-
-    Sprite *s2 = motor.retGestorSprites()->retSprite("auto1");
-    std::cout << "Espacio de Sprite 2: ";
-    verRect(s2->espacio);
-    
     while (!WindowShouldClose())
     {
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
         DrawText("Esta es la primera ventana", 190, 200, 20, RED);
-        //DrawTexture(t, 0, 0, RAYWHITE);
+        o1->actualizar();
+        o1->dibujar();
 
-        s1->dibujar();
-        s2->dibujar((Vector2) {50.f, 50.f});
-        
         EndDrawing();
     }
 

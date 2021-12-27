@@ -3,6 +3,8 @@
 
 #include <raylib.h>
 
+#include "GestorSprites.hpp"
+
 class Objeto
 {
   public:
@@ -15,6 +17,9 @@ class Objeto
     
     // Rectangulo de colision
     //Rectangle colision;
+
+    // Sprite del objeto
+    Sprite *sprite;
 
     // Angulo de rotacion del objeto
     float angulo;
