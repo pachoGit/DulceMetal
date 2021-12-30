@@ -6,6 +6,8 @@
 #include "GestorTexturas.hpp"
 #include "GestorSprites.hpp"
 #include "Objeto.hpp"
+#include "Auto.hpp"
+#include "Jugador.hpp"
 
 void verRect(Rectangle rect)
 {
@@ -26,16 +28,22 @@ int main()
 
     Texture2D t = motor.retGestorTexturas()->retTextura("principal");
 
-    Objeto *o1 = new Objeto((Vector2){0.f, 0.f});
+    Auto *a1 = new Auto((Vector2) {0.f, 0.f});
+    a1->angulo = 120.f;
+    Jugador *a2 = new Jugador((Vector2) {100.f, 100.f});
 
     while (!WindowShouldClose())
     {
         BeginDrawing();
 
         ClearBackground(RAYWHITE);
+        float dt = GetFrameTime();
         DrawText("Esta es la primera ventana", 190, 200, 20, RED);
-        o1->actualizar();
-        o1->dibujar();
+        a1->actualizar(dt);
+        a2->actualizar(dt);
+
+        a1->dibujar();
+        a2->dibujar();
 
         EndDrawing();
     }
