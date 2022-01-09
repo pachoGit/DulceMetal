@@ -1,6 +1,8 @@
 #ifndef MOTOR_HPP
 #define MOTOR_HPP
 
+#include <Box2D.h>
+
 #include "GestorTexturas.hpp"
 #include "GestorSprites.hpp"
 
@@ -11,6 +13,8 @@ class Motor
     GestorTexturas *gTexturas;
 
     GestorSprites *gSprites;
+
+    b2World *mundoFisicas;
 
   public:
     
@@ -32,6 +36,9 @@ class Motor
 
     /* Obtener el gestor de sprites */
     GestorSprites *retGestorSprites() const;
+
+    /* Obtener el mundo de las fisicas */
+    b2World *retMundoFisicas() const;
 };
 
 

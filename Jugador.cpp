@@ -8,11 +8,6 @@ Jugador::Jugador(Vector2 _posicion) : Objeto(_posicion)
     espacio.width = Config::auto_espacio.width;
     espacio.height = Config::auto_espacio.height;
 
-    colision.x = espacio.x;
-    colision.y = espacio.y;
-    colision.width = Config::auto_espacio.width;
-    colision.height = Config::auto_espacio.height;
-
     sprite = Motor::retMotor().retGestorSprites()->retSprite("auto1");
     vida = 0;
     velocidad = 50.f;
@@ -55,8 +50,8 @@ void Jugador::dibujar()
 void Jugador::disparar()
 {
     //Vector2 posicion = {posicion.x + (espacio.width / 2.f), posicion.y};
-    Vector2 p = {posicion.x, posicion.y};
+    Vector2 p = {posicion.x, posicion.y - (espacio.height / 2.f)};
     Bala *nueva = new Bala(p);
-    nueva->angulo += angulo;
+    nueva->angulo = angulo;
     balas.push_back(nueva);
 }

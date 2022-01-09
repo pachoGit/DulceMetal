@@ -16,6 +16,11 @@ class Config
     // Posicion y dimensiones por defecto de una "Bala"
     static Rectangle bala_espacio;
 
+    // Configuracion de iteraciones para las fisicas
+    static int velocidadIter;
+    
+    static int posicionIter;
+
 };
 
 

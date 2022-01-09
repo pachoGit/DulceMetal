@@ -20,10 +20,6 @@ class Objeto
     // Posicion actual del objeto
     Vector2 posicion;
     
-    // Rectangulo de colision
-    // Ademas representa exactamente donde se encuentra el sprite
-    Rectangle colision;
-
     // Sprite del objeto
     Sprite *sprite;
 

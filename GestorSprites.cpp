@@ -38,7 +38,7 @@ void GestorSprites::generarSprites()
 {
     Texture2D tprincipal = Motor::retMotor().retGestorTexturas()->retTextura("principal");
     insertar((Rectangle){5.f, 0.f, 95.f, 180.f}, "auto1", tprincipal);
-    insertar((Rectangle){1.f, 185.f, 21.f, 10.f}, "bala1", tprincipal);
+    insertar((Rectangle){187.f, 3.f, 12.f, 20.f}, "bala1", tprincipal);
 }
 
 void GestorSprites::insertar(Rectangle espacio, std::string nombre, Texture2D textura)

@@ -8,11 +8,6 @@ Auto::Auto(Vector2 _posicion) : Objeto(_posicion)
     espacio.width = Config::auto_espacio.width;
     espacio.height = Config::auto_espacio.height;
 
-    colision.x = espacio.x;
-    colision.y = espacio.y;
-    colision.width = Config::auto_espacio.width;
-    colision.height = Config::auto_espacio.height;
-
     sprite = Motor::retMotor().retGestorSprites()->retSprite("auto1");
     vida = 0;
     velocidad = 60.f;
@@ -40,6 +35,6 @@ void Auto::disparar()
 {
     Vector2 p = {posicion.x, posicion.y};
     Bala *nueva = new Bala(p);
-    nueva->angulo = angulo;
+    nueva->angulo += angulo;
     balas.push_back(nueva);
 }

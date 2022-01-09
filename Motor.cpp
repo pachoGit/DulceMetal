@@ -4,6 +4,7 @@ Motor::Motor()
 {
     gTexturas = nullptr;
     gSprites = nullptr;
+    mundoFisicas = nullptr;
 }
 
 Motor::~Motor() {}
@@ -18,6 +19,7 @@ void Motor::iniciarModulos()
 {
     gTexturas = new GestorTexturas();
     gSprites = new GestorSprites();
+    mundoFisicas = new b2World((b2Vec2) {0.f, 10.f});
 }
 
 void Motor::destruirModulos()
@@ -26,6 +28,8 @@ void Motor::destruirModulos()
         delete gTexturas;
     if (gSprites != nullptr)
         delete gSprites;
+    if (mundoFisicas != nullptr)
+        delete mundoFisicas;
 }
 
 GestorTexturas *Motor::retGestorTexturas() const
@@ -36,4 +40,9 @@ GestorTexturas *Motor::retGestorTexturas() const
 GestorSprites *Motor::retGestorSprites() const
 {
     return gSprites;
+}
+
+b2World *Motor::retMundoFisicas() const
+{
+    return mundoFisicas;
 }
