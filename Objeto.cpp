@@ -32,7 +32,7 @@ void Objeto::dibujar()
     espacio.y = posicion.y;
     if (sprite != nullptr && visible)
         DrawTexturePro(sprite->textura, sprite->espacio, Util::arreglarPosicion(espacio), (Vector2) {espacio.width/2.f, espacio.height/2.f}, angulo, RAYWHITE);
-    DrawRectangleLinesEx(espacio, 2, BLACK);
+    //DrawRectangleLinesEx(espacio, 2, BLACK);
     Util::DrawRectangleLinesPro(Util::arreglarPosicion(espacio), (Vector2) {espacio.width / 2.f, espacio.height / 2.f}, angulo, GREEN);
 }
 

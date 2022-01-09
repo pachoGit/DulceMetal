@@ -1,6 +1,7 @@
 #ifndef UTIL_HPP
 #define UTIL_HPP
 
+#include <vector>
 #include <raylib.h>
 
 class Util
@@ -21,6 +22,16 @@ class Util
      */
     static void DrawRectangleLinesPro(Rectangle rect, Vector2 protacion, float angulo, Color color);
 
+
+    /*
+     * Calcular la pendiente de una linea
+     */
+    static float pendiente(Vector2 p1, Vector2 p2);
+
+    /*
+     * Calcula y devuelve los puntos de los vertices del rectangulo
+     */
+    static std::vector<Vector2> retVerticesRectangulo(Rectangle rect, Vector2 protacion, float angulo);
 
 };
 

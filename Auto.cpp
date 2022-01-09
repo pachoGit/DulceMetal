@@ -2,6 +2,7 @@
 #include "Motor.hpp"
 #include "Config.hpp"
 #include "Bala.hpp"
+#include "Util.hpp"
 
 Auto::Auto(Vector2 _posicion) : Objeto(_posicion)
 {
@@ -33,8 +34,11 @@ void Auto::dibujar()
 
 void Auto::disparar()
 {
-    Vector2 p = {posicion.x, posicion.y};
+    std::vector<Vector2> vertices = Util::retVerticesRectangulo(Util::arreglarPosicion(espacio), (Vector2) {espacio.width / 2.f, espacio.height / 2.f}, angulo);
+    Vector2 arribaIzquierda = vertices.at(0);
+    Vector2 arribaDerecha = vertices.at(1);
+    Vector2 p = {arribaIzquierda.x, arribaIzquierda.y};
     Bala *nueva = new Bala(p);
-    nueva->angulo += angulo;
+    nueva->angulo = angulo;
     balas.push_back(nueva);
 }

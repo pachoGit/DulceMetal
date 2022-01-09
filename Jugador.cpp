@@ -2,6 +2,7 @@
 #include "Motor.hpp"
 #include "Config.hpp"
 #include "Bala.hpp"
+#include "Util.hpp"
 
 Jugador::Jugador(Vector2 _posicion) : Objeto(_posicion)
 {
@@ -49,9 +50,14 @@ void Jugador::dibujar()
 
 void Jugador::disparar()
 {
-    //Vector2 posicion = {posicion.x + (espacio.width / 2.f), posicion.y};
-    Vector2 p = {posicion.x, posicion.y - (espacio.height / 2.f)};
-    Bala *nueva = new Bala(p);
-    nueva->angulo = angulo;
-    balas.push_back(nueva);
+    std::vector<Vector2> vertices = Util::retVerticesRectangulo(Util::arreglarPosicion(espacio), (Vector2) {espacio.width / 2.f, espacio.height / 2.f}, angulo);
+    Vector2 arribaIzquierda = vertices.at(0);
+    Vector2 arribaDerecha = vertices.at(1);
+    Bala *b1 = new Bala((Vector2){arribaIzquierda.x, arribaIzquierda.y});
+    b1->angulo = angulo;
+    Bala *b2 = new Bala((Vector2){arribaDerecha.x, arribaDerecha.y});
+    b2->angulo = angulo;
+
+    balas.push_back(b1);
+    balas.push_back(b2);
 }
