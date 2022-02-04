@@ -9,7 +9,6 @@
 #include "Objeto.hpp"
 #include "Auto.hpp"
 #include "Jugador.hpp"
-//#include "RectColision.hpp"
 
 void verRect(Rectangle rect)
 {

@@ -11,6 +11,11 @@ include_directories("/usr/include/Box2D")
 find_package(raylib 2.0 REQUIRED)
 find_package(Box2D REQUIRED)
 
+foreach(archivo ${CODIGO})
+  message(${archivo})
+endforeach(archivo)
+
+
 add_executable(dulcemetal ${CODIGO})
 
 target_link_libraries(dulcemetal raylib)

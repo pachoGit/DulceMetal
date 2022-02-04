@@ -29,6 +29,7 @@ class Objeto
     // Indica si el objeto debe dibujarse
     bool visible;
 
+
   public:
     
     Objeto(Vector2 _posicion);

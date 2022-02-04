@@ -1,3 +1,9 @@
+/*
+ * Ejemplo basico de simulacion de fisicas con Raylib y Box2D.
+ * Presenta la manera basica de coincidir los elementos de raylib con
+ * los de Box2D (sin angulos de rotacion)
+ */
+
 #include <iostream>
 #include <raylib.h>
 #include <Box2D.h>
