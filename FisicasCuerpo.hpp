@@ -6,6 +6,7 @@
 #include "Objeto.hpp"
 
 class FisicasColisionador;
+class Objeto;
 
 class FisicasCuerpo
 {
@@ -16,7 +17,8 @@ class FisicasCuerpo
 
   public:
     
-    Objeto *objeto; // Objeto al que le pertenecen las fisicas
+    // Objeto al que le pertenecen las fisicas
+    Objeto *objeto;
 
     // Propiedades del cuerpo
     FCuerpoBanderas fbanderas;
@@ -30,6 +32,13 @@ class FisicasCuerpo
 
     ~FisicasCuerpo();
 
+    // Mostrar posicion y angulo en la salida estandar
+    void mostrar() const;
+
+    void dibujar();
+
+    FisicasColisionador *agregarColisionador(const FMaterial &material, FGrupoColision miGrupo, FGrupoColision colisionarCon);
+
     b2Body *retCuerpoBox2D() const;
 
     // Obtener la posicion del objeto de fisicas
@@ -38,8 +47,23 @@ class FisicasCuerpo
     // Obtener el angulo en grados
     float retAngulo() const;
 
-    FisicasColisionador *agregarColisionador(const FMaterial &material);
-    
+    // Obtener la velocidad
+    Vector2 retVelocidadLineal() const;
+
+    // Cambiar la posicion
+    void ingPosicion(const Vector2 &posicion);
+
+    // Cambiar el angulo de rotacion - en grados
+    void ingAngulo(float angulo);
+
+    // Tranformar la posicion y angulo
+    void transformar(const Vector2 &posicion, float angulo);
+
+    // Limpiar las fuerzas acumuladas por el objeto
+    void limpiarFuerzas();
+
+    void ingVelocidadLineal(const Vector2 &velocidad);
+
   private:
     
     inline bool checkBanderas(FCuerpoBanderas bandera) const;

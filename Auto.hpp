@@ -12,8 +12,6 @@ class Auto : public Objeto
 
     int vida;
 
-    float velocidad;
-
     std::vector<Bala *> balas;
 
   public:
@@ -25,6 +23,8 @@ class Auto : public Objeto
     void actualizar(float dt);
 
     void dibujar();
+
+    void generarFisicasIniciales();
 
     void disparar(/* TipoBala bala*/);
 

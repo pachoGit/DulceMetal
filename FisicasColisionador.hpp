@@ -20,7 +20,7 @@ class FisicasColisionador
 
   public:
     
-    FisicasColisionador(FisicasCuerpo *_fcuerpo, const FMaterial &_fmaterial);
+    FisicasColisionador(FisicasCuerpo *_fcuerpo, const FMaterial &_fmaterial, FGrupoColision miGrupo, FGrupoColision colisionarCon);
 
     ~FisicasColisionador();
 

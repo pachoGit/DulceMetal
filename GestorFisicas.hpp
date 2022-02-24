@@ -13,6 +13,10 @@ class GestorFisicas : public b2ContactListener
 
     b2Vec2 gravedad;
 
+    int velocidadIteraciones;
+
+    int posicionIteraciones;
+
   public:
 
     std::vector<FisicasCuerpo *> cuerposBox2D;
@@ -23,11 +27,29 @@ class GestorFisicas : public b2ContactListener
 
     ~GestorFisicas();
 
-    FisicasCuerpo *crearCuerpoBox2D(Objeto *objeto, FCuerpoBanderas fbanderas);
+    // Cuerpos Box2D
+    b2Body *crearCuerpoBox2D(const b2BodyDef *def);
 
-    FisicasCuerpo *crearCuerpoBox2D(Objeto *objeto, FCuerpoBanderas fbanderas, const FMaterial &material);
+    void destruirCuerpoBox2D(b2Body *cuerpo);
 
-    void destruirCuerpoBox2D(FisicasCuerpo *cuerpo);
+    // Cuerpos definidos por mi :D
+    FisicasCuerpo *crearFCuerpo(Objeto *objeto, FCuerpoBanderas fbanderas);
+
+    FisicasCuerpo *crearFCuerpo(Objeto *objeto, FCuerpoBanderas fbanderas, const FMaterial &material);
+
+    void destruirFCuerpo(FisicasCuerpo *cuerpo);
+
+    void actualizarFisicas();
+
+    void limpiarFuerzas();
+
+    void BeginContact(b2Contact *contacto) override;
+
+    void EndContact(b2Contact *contacto) override;
+
+    void PreSolve(b2Contact *contacto, const b2Manifold *oldManifold) override;
+    
+    void PostSolve(b2Contact *contacto, const b2ContactImpulse *impulso) override;
 };
 
 

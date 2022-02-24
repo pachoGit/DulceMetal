@@ -45,16 +45,6 @@ void Util::DrawRectangleLinesPro(Rectangle rect, Vector2 protacion, float angulo
     DrawLineV(abajoIzquierda, arribaIzquierda, color);
 }
 
-float Util::aRadianes(const float grados)
-{
-    return grados * DEG2RAD;
-}
-
-float Util::aGrados(const float radianes)
-{
-    return radianes * RAD2DEG;
-}
-
 std::vector<Vector2> Util::retVerticesRectangulo(Rectangle rect, Vector2 protacion, float angulo)
 {
     std::vector<Vector2> resultado;
@@ -94,14 +84,4 @@ std::vector<Vector2> Util::retVerticesRectangulo(Rectangle rect, Vector2 protaci
 float Util::pendiente(const Vector2 p1, const Vector2 p2)
 {
     return ((p1.y - p2.y) / (p1.x - p2.x));
-}
-
-Vector2 Util::aVectorRaylib(const b2Vec2 &vector)
-{
-    return (Vector2) {vector.x, vector.y};
-}
-
-b2Vec2 Util::aVectorBox2D(const Vector2 vector)
-{
-    return b2Vec2(vector.x, vector.y);
 }

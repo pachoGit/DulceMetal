@@ -5,6 +5,7 @@
 
 #include "GestorTexturas.hpp"
 #include "GestorSprites.hpp"
+#include "GestorFisicas.hpp"
 
 class Motor
 {
@@ -14,7 +15,7 @@ class Motor
 
     GestorSprites *gSprites;
 
-    b2World *mundoFisicas;
+    GestorFisicas *gFisicas;
 
   public:
     
@@ -38,8 +39,7 @@ class Motor
     GestorSprites *retGestorSprites() const;
 
     /* Obtener el mundo de las fisicas */
-    b2World *retMundoFisicas() const;
+    GestorFisicas *retGestorFisicas() const;
 };
-
 
 #endif /* MOTOR_HPP */

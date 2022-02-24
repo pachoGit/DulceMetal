@@ -1,14 +1,19 @@
 #include "Bala.hpp"
 #include "Motor.hpp"
 #include "Config.hpp"
+#include "Convertir.hpp"
 
 Bala::Bala(Vector2 _posicion) : Objeto(_posicion)
 {
-    espacio.width = Config::bala_espacio.width;
-    espacio.height = Config::bala_espacio.height;
+    espacio.width = Config::DIM_BALA.x;
+    espacio.height = Config::DIM_BALA.y;
     sprite = Motor::retMotor().retGestorSprites()->retSprite("bala1");
-    velocidad = 100.f;
+    velocidad = {1.0f, 1.0f};
     angulo = 0.f; // Para que este a la misma direccion de la textura del auto :D
+    tipoClase = CLASE_BALA;
+    nombre = "Bala";
+    
+    generarFisicasIniciales();
 }
 
 Bala::~Bala()
@@ -18,11 +23,27 @@ Bala::~Bala()
 
 void Bala::actualizar(float dt)
 {
-    posicion.x += std::sin(angulo * DEG2RAD) * dt * velocidad;
-    posicion.y -= std::cos(angulo * DEG2RAD) * dt * velocidad;
+    if (habilitarProcesadoFisicas == true)
+    {
+        sincronizarObjetoConFisicas();
+        return;
+    }
+
+    posicion.x += std::sin(Convertir::GradosEnRadianes(angulo)) * dt * velocidad.x;
+    posicion.y -= std::cos(Convertir::GradosEnRadianes(angulo)) * dt * velocidad.y;
+
+    sincronizarFisicasConObjeto();
 }
 
 void Bala::dibujar()
 {
     Objeto::dibujar();
+}
+
+void Bala::generarFisicasIniciales()
+{
+    fcuerpo = new FisicasCuerpo(this, (FCuerpoBanderas) (FCUERPO_DEFECTO | FCUERPO_PROYECTIL));
+    if (fcuerpo == nullptr)
+        return;
+    fcuerpo->agregarColisionador(FMaterial(1.f, 1.f, 0.1f), FGRUPO_BALA, (FGrupoColision) (FGRUPO_AUTO | FGRUPO_OBSTACULO));
 }

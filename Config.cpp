@@ -1,13 +1,19 @@
 #include "Config.hpp"
 
-Rectangle Config::obj_espacio = {0.f, 0.f, 30.f, 50.f};
+float Config::PIXELES_POR_METRO = 30.f;
 
-Rectangle Config::auto_espacio = {0.f, 0.f, 30.f, 50.f};
+Vector2 Config::DIM_VENTANA = {40.0f, 28.0f};
 
-Rectangle Config::bala_espacio = {0.f, 0.f, 5.f, 10.f};
+Vector2 Config::DIM_OBJETO = {1.0f, 1.0f};
 
-int Config::velocidadIter = 6;
+Vector2 Config::DIM_AUTO = {1.0f, 1.7f};
 
-int Config::posicionIter = 2;
+Vector2 Config::DIM_BALA = {0.17f, 0.3f};
+
+Vector2 Config::DIM_MURO = {3.0f, 1.0f};
+
+int Config::VELOCIDAD_ITER = 6;
+
+int Config::POSICION_ITER = 2;
 
 

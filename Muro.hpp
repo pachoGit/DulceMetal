@@ -1,22 +1,21 @@
-#ifndef BALA_HPP
-#define BALA_HPP
+#ifndef MURO_HPP
+#define MURO_HPP
 
 #include "Objeto.hpp"
 
-class Bala : public Objeto
+class Muro : public Objeto
 {
   public:
-
-    Bala(Vector2 _posicion);
-
-    ~Bala();
+    
+    Muro(Vector2 _posicion);
 
     void actualizar(float dt);
 
     void dibujar();
 
     void generarFisicasIniciales();
+
 };
 
 
-#endif /* BALA_HPP */
+#endif /* MURO_HPP */

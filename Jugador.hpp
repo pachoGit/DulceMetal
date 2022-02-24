@@ -12,8 +12,6 @@ class Jugador : public Objeto
 
     int vida;
 
-    float velocidad;
-
     std::vector<Bala *> balas;
 
   public:
@@ -28,6 +26,7 @@ class Jugador : public Objeto
 
     void disparar(/* TipoBala bala*/);
 
+    void generarFisicasIniciales();
 };
 
 

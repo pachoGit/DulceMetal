@@ -117,6 +117,10 @@ int main()
             fjugador->ApplyLinearImpulse((b2Vec2) {100.f, 0.f}, fjugador->GetWorldCenter(), true);
             fjugador2->ApplyLinearImpulse((b2Vec2) {-100.f, 0.f}, fjugador->GetWorldCenter(), true);
         }
+        if (IsKeyDown(KEY_A))
+        {
+            fjugador->SetTransform((b2Vec2) {100.f, 50.f}, 0.f);
+        }
 
 
         jugador.x = fjugador->GetPosition().x;

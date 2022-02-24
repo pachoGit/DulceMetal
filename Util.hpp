@@ -36,16 +36,6 @@ class Util
     static void DrawRectangleLinesPro(Rectangle rect, Vector2 protacion, float angulo, Color color);
 
     /*
-     * Convierte un angulo a radianes
-     */
-    static float aRadianes(const float grados);
-    
-    /*
-     * Convierte un angulo a grados
-     */
-    static float aGrados(const float radianes);
-
-    /*
      * Calcula y devuelve los puntos de los vertices del rectangulo
      */
     static std::vector<Vector2> retVerticesRectangulo(Rectangle rect, Vector2 protacion, float angulo);
@@ -55,15 +45,6 @@ class Util
      */
     static float pendiente(const Vector2 p1, const Vector2 p2);
 
-    /*
-     * Convertir un vector de Box2D a un vetor de Raylib
-     */
-    static Vector2 aVectorRaylib(const b2Vec2 &vector);
-
-    /*
-     * Convertir un vector de Raylib a un vetor de Box2D
-     */
-    static b2Vec2 aVectorBox2D(const Vector2 vector);
 };
 
 
