@@ -21,6 +21,12 @@ Auto::Auto(Vector2 _posicion) : Objeto(_posicion)
 Auto::~Auto()
 {
     // Borrar las balas
+    if (balas.size() > 0)
+    {
+        for (auto &bala : balas)
+            delete bala;
+        balas.clear();
+    }
 }
 
 void Auto::actualizar(float dt)
@@ -51,7 +57,7 @@ void Auto::generarFisicasIniciales()
     fcuerpo = new FisicasCuerpo(this, FCUERPO_DEFECTO);
     if (fcuerpo == nullptr)
         return;
-    fcuerpo->agregarColisionador(FMaterial(80.f, 1.0f, 0.0f), FGRUPO_AUTO, (FGrupoColision) (FGRUPO_AUTO | FGRUPO_JUGADOR | FGRUPO_OBSTACULO | FGRUPO_BALA));
+    fcuerpo->agregarColisionador(FMaterial(80.f, 0.0f, 0.0f), FGRUPO_AUTO, (FGrupoColision) (FGRUPO_AUTO | FGRUPO_JUGADOR | FGRUPO_OBSTACULO | FGRUPO_BALA));
 }
 
 void Auto::disparar()

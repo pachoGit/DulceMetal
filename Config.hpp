@@ -19,11 +19,14 @@ class Config
     // Dimensiones (en metros) por defecto de un "Auto"
     static Vector2 DIM_AUTO;
 
-    // Posicion y dimensiones (en metros) por defecto de una "Bala"
+    // dimensiones (en metros) por defecto de una "Bala"
     static Vector2 DIM_BALA;
 
-    // Posicion y dimensiones (en metros) por defecto de una "Muro"
+    // dimensiones (en metros) por defecto de una "Muro"
     static Vector2 DIM_MURO;
+
+    // Dimensiones (en metros) por defecto de un bloque de mapa
+    //static Vector2 DIM_BLOQUEMAPA;
 
     // Iteraciones de velocidad para la simulacion de la fisica
     static int VELOCIDAD_ITER;
@@ -31,12 +34,8 @@ class Config
     // Iteraciones de posiciones para la simulacion de la fisica
     static int POSICION_ITER;
 
-    // Configuracion de iteraciones para las fisicas
-    // static int velocidadIter;
-    
-    // static int posicionIter;
-
-
+    // Dimension de la animacion de explosion (en pixeles)
+    static Vector2 DIM_EXPLOSION;
 };
 
 

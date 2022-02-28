@@ -1,5 +1,6 @@
 #include "GestorFisicas.hpp"
 #include "ObjetoAyudas.hpp"
+#include "Config.hpp"
 
 #include <algorithm>
 #include <iostream>
@@ -9,8 +10,8 @@ GestorFisicas::GestorFisicas()
     gravedad.Set(0.f, 0.f);
     mundoBox2D = new b2World(gravedad);
     mundoBox2D->SetContactListener(this);
-    velocidadIteraciones = 6;
-    posicionIteraciones = 2;
+    velocidadIteraciones = Config::VELOCIDAD_ITER;
+    posicionIteraciones = Config::POSICION_ITER;
 }
 
 GestorFisicas::~GestorFisicas()
@@ -55,7 +56,7 @@ void GestorFisicas::destruirFCuerpo(FisicasCuerpo *cuerpo)
 {
     if (!cuerpo)
         return;
-    cuerposBox2D.erase(std::remove(cuerposBox2D.begin(), cuerposBox2D.end(), cuerpo), cuerposBox2D.end());
+    //cuerposBox2D.erase(std::remove(cuerposBox2D.begin(), cuerposBox2D.end(), cuerpo), cuerposBox2D.end());
     delete cuerpo;
 }
 

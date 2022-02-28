@@ -45,7 +45,6 @@ void Objeto::dibujar()
     Rectangle vespacio = Convertir::MetrosEnPixeles(espacio);
     if (sprite != nullptr && visible)
         DrawTexturePro(sprite->textura, sprite->espacio, vespacio, (Vector2) {vespacio.width/2.f, vespacio.height/2.f}, angulo, RAYWHITE);
-    //Util::DrawRectangleLinesPro(Util::arreglarPosicion(espacio), (Vector2) {espacio.width / 2.f, espacio.height / 2.f}, angulo, GREEN);
 }
 
 void Objeto::generarFisicasIniciales()

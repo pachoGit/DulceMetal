@@ -2,16 +2,20 @@
 #include "Motor.hpp"
 #include "Config.hpp"
 
+#include <iostream>
+
 Muro::Muro(Vector2 _posicion) : Objeto(_posicion)
 {
     espacio.width = Config::DIM_MURO.x;
     espacio.height = Config::DIM_MURO.y;
-    sprite = Motor::retMotor().retGestorSprites()->retSprite("muro1");
+    sprite = Motor::retMotor().retGestorSprites()->retSprite("obstaculo1");
     tipoClase = CLASE_MURO;
     nombre = "Muro";
 
     generarFisicasIniciales();
 }
+
+Muro::~Muro() {}
 
 void Muro::actualizar(float dt)
 {

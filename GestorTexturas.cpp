@@ -18,8 +18,10 @@ GestorTexturas::~GestorTexturas()
 void GestorTexturas::cargarTexturas()
 {
     // Esta ruta es cuando es ejecutado desde la carpeta producto
-    //texturas.push_back(new InfoTextura("principal", LoadTexture("../recursos/texturas.png")));
-    texturas.push_back(new InfoTextura("principal", LoadTexture("../recursos/textura_autos.png")));
+    texturas.push_back(new InfoTextura("autos", LoadTexture("../recursos/autos.png")));
+    texturas.push_back(new InfoTextura("balas", LoadTexture("../recursos/balas.png")));
+    texturas.push_back(new InfoTextura("explosiones", LoadTexture("../recursos/explosiones.png")));
+    texturas.push_back(new InfoTextura("obstaculos", LoadTexture("../recursos/obstaculos.png")));
 }
 
 Texture2D GestorTexturas::retTextura(std::string nombre) const

@@ -8,7 +8,7 @@ Bala::Bala(Vector2 _posicion) : Objeto(_posicion)
     espacio.width = Config::DIM_BALA.x;
     espacio.height = Config::DIM_BALA.y;
     sprite = Motor::retMotor().retGestorSprites()->retSprite("bala1");
-    velocidad = {1.0f, 1.0f};
+    velocidad = {8.0f, 8.0f};
     angulo = 0.f; // Para que este a la misma direccion de la textura del auto :D
     tipoClase = CLASE_BALA;
     nombre = "Bala";

@@ -9,6 +9,8 @@ class Muro : public Objeto
     
     Muro(Vector2 _posicion);
 
+    ~Muro();
+
     void actualizar(float dt);
 
     void dibujar();
