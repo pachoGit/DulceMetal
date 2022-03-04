@@ -1,7 +1,7 @@
 #ifndef MOTOR_HPP
 #define MOTOR_HPP
 
-#include <Box2D.h>
+#include <box2d/box2d.h>
 
 #include "GestorTexturas.hpp"
 #include "GestorSprites.hpp"

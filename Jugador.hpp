@@ -3,30 +3,25 @@
 
 #include <vector>
 
-#include "Objeto.hpp"
+#include "Auto.hpp"
 #include "Bala.hpp"
+#include "BarraVida.hpp"
 
-class Jugador : public Objeto
+class Jugador : public Auto
 {
-  public:
-
-    int vida;
-
-    std::vector<Bala *> balas;
-
   public:
 
     Jugador(Vector2 _posicion);
 
     ~Jugador();
 
-    void actualizar(float dt);
+    void actualizar(float dt) override;
 
-    void dibujar();
+    void dibujar() override;
 
     void disparar(/* TipoBala bala*/);
 
-    void generarFisicasIniciales();
+    void generarFisicasIniciales() override;
 };
 
 

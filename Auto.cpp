@@ -10,9 +10,10 @@ Auto::Auto(Vector2 _posicion) : Objeto(_posicion)
     espacio.width = Config::DIM_AUTO.x;
     espacio.height = Config::DIM_AUTO.y;
     sprite = Motor::retMotor().retGestorSprites()->retSprite("auto1");
-    vida = 0;
     velocidad = {3.0f, 3.0f};
     tipoClase = CLASE_AUTO;
+    vida = Config::MAX_VIDA;
+    barraVida = new BarraVida(this);
     nombre = "Auto";
 
     generarFisicasIniciales();
@@ -27,6 +28,11 @@ Auto::~Auto()
             delete bala;
         balas.clear();
     }
+    if (barraVida != nullptr)
+    {
+        delete barraVida;
+        barraVida = nullptr;
+    }
 }
 
 void Auto::actualizar(float dt)
@@ -34,11 +40,14 @@ void Auto::actualizar(float dt)
     if (habilitarProcesadoFisicas == true)
     {
         sincronizarObjetoConFisicas();
+        barraVida->actualizar(dt);
         return;
     }
 
     posicion.x += std::sin(Convertir::GradosEnRadianes(angulo)) * dt * velocidad.x;
     posicion.y -= std::cos(Convertir::GradosEnRadianes(angulo)) * dt * velocidad.y;
+
+    barraVida->actualizar(dt);
 
     sincronizarFisicasConObjeto();
 }
@@ -46,10 +55,13 @@ void Auto::actualizar(float dt)
 void Auto::dibujar()
 {
     Objeto::dibujar();
+
+    barraVida->dibujar();
+
     for (auto bala : balas)
         bala->dibujar();
     // Debug fisicas
-    fcuerpo->dibujar();
+    //fcuerpo->dibujar();
 }
 
 void Auto::generarFisicasIniciales()

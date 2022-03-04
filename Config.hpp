@@ -36,6 +36,12 @@ class Config
 
     // Dimension de la animacion de explosion (en pixeles)
     static Vector2 DIM_EXPLOSION;
+
+    // Maxima vida de los autos y el personaje
+    static int MAX_VIDA;
+
+    // Dimensiones de la barra de vida (en pixeles)
+    static Vector2 DIM_BARRAVIDA;
 };
 
 

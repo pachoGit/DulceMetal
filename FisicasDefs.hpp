@@ -2,7 +2,7 @@
 #define FISICAS_DEFS_HPP
 
 #include <raylib.h>
-#include <Box2D.h>
+#include <box2d/box2d.h>
 
 #define BIT(n) (1 << n)
 

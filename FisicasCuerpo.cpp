@@ -25,10 +25,9 @@ FisicasCuerpo::FisicasCuerpo(Objeto *_objeto, FCuerpoBanderas _fbanderas) :
     {
         defCuerpo.position = Convertir::VectorRaylibEnBox2d(objeto->posicion);
         defCuerpo.angle = Convertir::GradosEnRadianes(objeto->angulo);
+        defCuerpo.userData.pointer = reinterpret_cast<uintptr_t>(this);
     }
     cuerpoBox2D = Motor::retMotor().retGestorFisicas()->crearCuerpoBox2D(&defCuerpo);
-    if (cuerpoBox2D != nullptr)
-        cuerpoBox2D->SetUserData(objeto);
 }
 
 FisicasCuerpo::~FisicasCuerpo()

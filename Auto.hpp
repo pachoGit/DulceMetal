@@ -5,13 +5,19 @@
 
 #include "Objeto.hpp"
 #include "Bala.hpp"
+#include "BarraVida.hpp"
 
 class Auto : public Objeto
 {
   public:
 
+    // Cantidad de vida actual del auto
     int vida;
 
+    // Textura de la barra de vida
+    BarraVida *barraVida;
+
+    // Lista de balas que esta lanzando el auto
     std::vector<Bala *> balas;
 
   public:

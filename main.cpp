@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include <raylib.h>
-#include <Box2D.h>
+#include <box2d/box2d.h>
 
 #include "Motor.hpp"
 #include "GestorTexturas.hpp"
@@ -16,13 +16,12 @@
 #include "Config.hpp"
 #include "Animacion.hpp"
 
-#include <array>
+#include <iostream>
 
 int main()
 {
     // InitWindow(1200, 840, "Dulce Metal v1.0");
     InitWindow(Convertir::MetrosEnPixeles(Config::DIM_VENTANA.x), Convertir::MetrosEnPixeles(Config::DIM_VENTANA.y), "Dulce Metal v1.0");
-
     SetTargetFPS(60);
 
     Motor &motor = Motor::retMotor();
@@ -37,7 +36,6 @@ int main()
 
     Jugador *a2 = new Jugador((Vector2) {5.f, 10.f});
     Muro *m1 = new Muro((Vector2) {15.f, 10.f});
-
     Animacion *b1 = new Animacion((Vector2) {100.f, 10.f});
 
     while (!WindowShouldClose())
@@ -58,11 +56,13 @@ int main()
         a2->dibujar();
         m1->dibujar();
         b1->dibujar();
-
+        
         motor.retGestorFisicas()->limpiarFuerzas();
 
         EndDrawing();
     }
+
+    std::cout << "A1: " << a1->nombre << std::endl;
 
     delete a1;
     delete a2;

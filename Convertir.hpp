@@ -3,7 +3,7 @@
 
 #include "Config.hpp"
 #include <raylib.h>
-#include <Box2D.h>
+#include <box2d/box2d.h>
 
 class Convertir
 {

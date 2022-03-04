@@ -5,12 +5,9 @@
 #include "Util.hpp"
 #include "Convertir.hpp"
 
-Jugador::Jugador(Vector2 _posicion) : Objeto(_posicion)
+Jugador::Jugador(Vector2 _posicion) : Auto(_posicion)
 {
-    espacio.width = Config::DIM_AUTO.x;
-    espacio.height = Config::DIM_AUTO.y;
     sprite = Motor::retMotor().retGestorSprites()->retSprite("auto1");
-    vida = 0;
     velocidad = {10.f, 10.f};
     tipoClase = CLASE_JUGADOR;
     nombre = "Jugador";
@@ -20,7 +17,7 @@ Jugador::Jugador(Vector2 _posicion) : Objeto(_posicion)
 
 Jugador::~Jugador()
 {
-    // Borrar las balas
+    // Se borra en "Auto.cpp"
 }
 
 void Jugador::actualizar(float dt)
@@ -28,6 +25,7 @@ void Jugador::actualizar(float dt)
     if (habilitarProcesadoFisicas == true)
     {
         sincronizarObjetoConFisicas();
+        barraVida->actualizar(dt);
         return;
     }
     if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
@@ -45,17 +43,25 @@ void Jugador::actualizar(float dt)
         posicion.y += std::cos(Convertir::GradosEnRadianes(angulo)) * dt * velocidad.y;
     }
     sincronizarFisicasConObjeto();
+
     if (IsKeyPressed(KEY_SPACE))
         disparar();
     for (auto &bala : balas)
         bala->actualizar(dt);
+
+    barraVida->actualizar(dt);
 }
 
 void Jugador::dibujar()
 {
+    Auto::dibujar();
+
+    /*
     Objeto::dibujar();
+    barraVida->dibujar();
     for (auto bala : balas)
         bala->dibujar();
+    */
     fcuerpo->dibujar(); // Dibujar las fisicas
 }
 
@@ -75,6 +81,11 @@ void Jugador::disparar()
 
 void Jugador::generarFisicasIniciales()
 {
+    if (fcuerpo != nullptr)
+    {
+        delete fcuerpo;
+        fcuerpo = nullptr;
+    }
     fcuerpo = new FisicasCuerpo(this, FCUERPO_DEFECTO);
     if (fcuerpo == nullptr)
         return;
