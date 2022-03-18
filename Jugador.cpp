@@ -12,6 +12,7 @@ Jugador::Jugador(Vector2 _posicion) : Auto(_posicion)
     tipoClase = CLASE_JUGADOR;
     nombre = "Jugador";
 
+    iniciarBarraVida();
     generarFisicasIniciales();
 }
 
@@ -22,12 +23,6 @@ Jugador::~Jugador()
 
 void Jugador::actualizar(float dt)
 {
-    if (habilitarProcesadoFisicas == true)
-    {
-        sincronizarObjetoConFisicas();
-        barraVida->actualizar(dt);
-        return;
-    }
     if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
         angulo += 0.5f;
     if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))
@@ -49,20 +44,24 @@ void Jugador::actualizar(float dt)
     for (auto &bala : balas)
         bala->actualizar(dt);
 
-    barraVida->actualizar(dt);
+    actualizarBarraVida();
+
+    if (IsKeyDown(KEY_ENTER))
+    {
+        for (auto &bala : balas)
+            bala->explotar();
+    }
+    
+    eliminarBalasDeMemoria();
+}
+
+void Jugador::procesarFisicas()
+{
 }
 
 void Jugador::dibujar()
 {
     Auto::dibujar();
-
-    /*
-    Objeto::dibujar();
-    barraVida->dibujar();
-    for (auto bala : balas)
-        bala->dibujar();
-    */
-    fcuerpo->dibujar(); // Dibujar las fisicas
 }
 
 void Jugador::disparar()
@@ -70,9 +69,9 @@ void Jugador::disparar()
     std::vector<Vector2> vertices = Util::retVerticesRectangulo(espacio, (Vector2) {espacio.width / 2.f, espacio.height / 2.f}, angulo);
     Vector2 arribaIzquierda = vertices.at(0);
     Vector2 arribaDerecha = vertices.at(1);
-    Bala *b1 = new Bala((Vector2){arribaIzquierda.x, arribaIzquierda.y});
+    Bala *b1 = new Bala((Vector2){arribaIzquierda.x, arribaIzquierda.y}, "balaAura");
     b1->angulo = angulo;
-    Bala *b2 = new Bala((Vector2){arribaDerecha.x, arribaDerecha.y});
+    Bala *b2 = new Bala((Vector2){arribaDerecha.x, arribaDerecha.y}, "balaAura");
     b2->angulo = angulo;
 
     balas.push_back(b1);

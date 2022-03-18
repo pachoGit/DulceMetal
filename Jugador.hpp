@@ -17,6 +17,8 @@ class Jugador : public Auto
 
     void actualizar(float dt) override;
 
+    void procesarFisicas() override;
+
     void dibujar() override;
 
     void disparar(/* TipoBala bala*/);

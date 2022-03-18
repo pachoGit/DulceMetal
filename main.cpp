@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include <raylib.h>
 #include <box2d/box2d.h>
 
@@ -31,12 +29,13 @@ int main()
     motor.retGestorSprites()->generarSprites();
     motor.retGestorSprites()->generarSpritesAnimados();
 
-    Auto *a1 = new Auto((Vector2) {0.f, 5.f});
-    a1->angulo = 120.f;
+    Auto *a1 = new Auto((Vector2) {2.f, 5.f});
+    //a1->angulo = 120.f;
 
     Jugador *a2 = new Jugador((Vector2) {5.f, 10.f});
-    Muro *m1 = new Muro((Vector2) {15.f, 10.f});
-    Animacion *b1 = new Animacion((Vector2) {100.f, 10.f});
+    Muro *m1 = new Muro((Vector2) {15.f, 12.f});
+    Animacion *b1 = new Animacion((Vector2) {100.f, 20.f}, "explosionBlanca", 10);
+    b1->enBucle = true;
 
     while (!WindowShouldClose())
     {
@@ -61,8 +60,6 @@ int main()
 
         EndDrawing();
     }
-
-    std::cout << "A1: " << a1->nombre << std::endl;
 
     delete a1;
     delete a2;

@@ -9,7 +9,9 @@ Vector2 Config::DIM_OBJETO = {1.0f, 1.0f};
 Vector2 Config::DIM_AUTO = {1.0f, 1.7f};
 
 //Vector2 Config::DIM_BALA = {0.17f, 0.3f};
-Vector2 Config::DIM_BALA = {0.17f, 0.17f};
+Vector2 Config::DIM_BALA_BASICA = {0.17f, 0.17f};
+
+Vector2 Config::DIM_BALA_NORMAL = {0.20f, 0.23f};
 
 Vector2 Config::DIM_MURO = {4.0f, 1.0f};
 

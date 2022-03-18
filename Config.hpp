@@ -19,8 +19,11 @@ class Config
     // Dimensiones (en metros) por defecto de un "Auto"
     static Vector2 DIM_AUTO;
 
-    // dimensiones (en metros) por defecto de una "Bala"
-    static Vector2 DIM_BALA;
+    // Dimensiones (en metros) por defecto de una "Bala" basica
+    static Vector2 DIM_BALA_BASICA;
+
+    // Dimensiones (en metros) por defecto de una "Bala"
+    static Vector2 DIM_BALA_NORMAL;
 
     // dimensiones (en metros) por defecto de una "Muro"
     static Vector2 DIM_MURO;

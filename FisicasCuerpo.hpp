@@ -62,7 +62,15 @@ class FisicasCuerpo
     // Limpiar las fuerzas acumuladas por el objeto
     void limpiarFuerzas();
 
+    // Ingresar velocidad al cuerpo
     void ingVelocidadLineal(const Vector2 &velocidad);
+
+    // Aplicar fuerza al cuerpo
+    void aplicarFuerza(const Vector2 &fuerza, const Vector2 &punto);
+        
+    // Aplicar impulso al cuerpo
+    void aplicarImpulso(const Vector2 &impulso, const Vector2 &punto);
+
 
   private:
     

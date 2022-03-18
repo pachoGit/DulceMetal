@@ -23,11 +23,17 @@ void Muro::actualizar(float dt)
     sincronizarObjetoConFisicas();
 }
 
+void Muro::procesarFisicas()
+{
+}
+
 void Muro::dibujar()
 {
     Objeto::dibujar();
+    /*
     if (fcuerpo)
         fcuerpo->dibujar();
+    */
 }
 
 void Muro::generarFisicasIniciales()

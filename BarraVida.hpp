@@ -1,35 +1,34 @@
 #ifndef BARRAVIDA_HPP
 #define BARRAVIDA_HPP
 
-#include "Objeto.hpp"
-
 #include <raylib.h>
 
 class BarraVida
 {
   private:
 
-    // Auto al que le pertenece la barra de vida
-    Objeto *vehiculo;
+    // Posicion y dimensiones iniciales de rectangulo que representa la barra
+    Rectangle espacio;
 
   public:
     
-    // Posicion y dimension de la barra de vida
-    Rectangle espacio;
-    
-    // Anchura actual de la barra de vida
-    int anchoBarraVida;
-
-    // Posicion actual del objeto
+    // Posicion actual de la barra
     Vector2 posicion;
 
+    // Cantidad de espacio que estara pintado la barra
+    int anchoPintado;
+
   public:
 
-    BarraVida(Objeto *_vehiculo);
+    /**
+     * @param _posicion    - Posicion inicial de la barra
+     * @param anchoPintado - Ancho inicial que estara pintado la barra [0, Config::MAX_VIDA]
+     */
+    BarraVida(Vector2 _posicion, int _anchoPintado);
 
     ~BarraVida();
 
-    void actualizar(float dt);
+    void actualizar(Vector2 posicion, int anchoPintado);
 
     void dibujar();
 };

@@ -20,6 +20,30 @@ class Auto : public Objeto
     // Lista de balas que esta lanzando el auto
     std::vector<Bala *> balas;
 
+  protected:
+
+    // Obtener la velocidad lateral del cuerpo
+    b2Vec2 retVelocidadLateral();
+    
+    // Obtener la velocidad delantera del cuerpo
+    b2Vec2 retVelocidadDelantera();
+
+    // Detiene la rotacion del auto
+    void detenerRotacion();
+
+    // Detiene el movimiento del auto
+    void detenerAuto();
+
+    // 
+    void actualizarFriccion();
+
+    void iniciarBarraVida();
+
+    void actualizarBarraVida();
+
+    /* Elimina aquellas balas que ya no son necesarias */
+    void eliminarBalasDeMemoria();
+
   public:
 
     Auto(Vector2 _posicion);
@@ -28,12 +52,13 @@ class Auto : public Objeto
 
     void actualizar(float dt);
 
+    void procesarFisicas();
+
     void dibujar();
 
     void generarFisicasIniciales();
 
     void disparar(/* TipoBala bala*/);
-
 };
 
 

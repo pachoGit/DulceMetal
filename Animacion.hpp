@@ -27,9 +27,15 @@ class Animacion
     // Contador de cuadros de la ejecucion
     int contadorCuadro;
 
+    // True para reproducir por siempre
+    bool enBucle;
+
+    // Informa si la animacion esta ejecutandose
+    bool estaCorriendo;
+
   public:
     
-    Animacion(Vector2 _posicion);
+    Animacion(Vector2 _posicion, std::string nombre, int _velocidadCuadro);
 
     ~Animacion();
     
@@ -39,7 +45,5 @@ class Animacion
 
 };
 
-
-    
 
 #endif /* ANIMACION_HPP */

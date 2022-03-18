@@ -13,6 +13,8 @@ class Muro : public Objeto
 
     void actualizar(float dt);
 
+    void procesarFisicas();
+
     void dibujar();
 
     void generarFisicasIniciales();

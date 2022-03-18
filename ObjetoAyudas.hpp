@@ -6,7 +6,7 @@
 #include "Jugador.hpp"
 #include "Auto.hpp"
 
-inline Jugador* aJugador(Objeto *objeto)
+inline Jugador* ObjetoEnJugador(Objeto *objeto)
 {
     Jugador *jugador = nullptr;
     if (objeto && objeto->esClaseJugador())
@@ -14,7 +14,7 @@ inline Jugador* aJugador(Objeto *objeto)
     return jugador;
 }
 
-inline Bala *aBala(Objeto *objeto)
+inline Bala *ObjetoEnBala(Objeto *objeto)
 {
     Bala *bala = nullptr;
     if (objeto && objeto->esClaseBala())
@@ -22,12 +22,21 @@ inline Bala *aBala(Objeto *objeto)
     return bala;
 }
 
-inline Auto *aAuto(Objeto *objeto)
+inline Auto *ObjetoEnAuto(Objeto *objeto)
 {
     Auto *a = nullptr;
     if (objeto && objeto->esClaseAuto())
         a = static_cast<Auto *>(objeto);
     return a;
+}
+
+inline Objeto *retObjetoDeFixture(b2Fixture *faccesorio)
+{
+    Objeto *objeto = nullptr;
+    if (faccesorio == nullptr)
+        return objeto; // nullptr
+    FisicasCuerpo *fcuerpo = (FisicasCuerpo *) faccesorio->GetBody()->GetUserData().pointer;
+    return fcuerpo->objeto;
 }
 
 #endif /* OBJETOAYUDAS_HPP */

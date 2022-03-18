@@ -118,4 +118,14 @@ void FisicasCuerpo::ingVelocidadLineal(const Vector2 &velocidad)
     cuerpoBox2D->SetLinearVelocity(Convertir::VectorRaylibEnBox2d(velocidad));
 }
 
+void FisicasCuerpo::aplicarFuerza(const Vector2 &fuerza, const Vector2 &punto)
+{
+    cuerpoBox2D->ApplyForce(Convertir::VectorRaylibEnBox2d(fuerza), Convertir::VectorRaylibEnBox2d(punto), true);
+}
+
+void FisicasCuerpo::aplicarImpulso(const Vector2 &impulso, const Vector2 &punto)
+{
+    cuerpoBox2D->ApplyLinearImpulse(Convertir::VectorRaylibEnBox2d(impulso), Convertir::VectorRaylibEnBox2d(punto), true);
+}
+
 

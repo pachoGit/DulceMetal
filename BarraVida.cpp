@@ -1,44 +1,33 @@
 #include "BarraVida.hpp"
 #include "Config.hpp"
 #include "Convertir.hpp"
+#include "ObjetoAyudas.hpp"
 
-BarraVida::BarraVida(Objeto *_vehiculo)
+BarraVida::BarraVida(Vector2 _posicion, int _anchoPintado)
 {
-    vehiculo = _vehiculo;
-    espacio.x = Convertir::MetrosEnPixeles(vehiculo->espacio.x);
-    espacio.y = Convertir::MetrosEnPixeles(vehiculo->espacio.y);
+    // Seria genial que reconociera a la clase Auto, pero no se que por que no :/
+    espacio.x = _posicion.x;
+    espacio.y = _posicion.y;
     espacio.width = Config::DIM_BARRAVIDA.x;
     espacio.height = Config::DIM_BARRAVIDA.y;
-    posicion = vehiculo->posicion;
-    anchoBarraVida = Config::MAX_VIDA;
+    posicion = _posicion;
+    anchoPintado = _anchoPintado;
 }
 
 BarraVida::~BarraVida() {}
 
-void BarraVida::actualizar(float dt)
+void BarraVida::actualizar(Vector2 _posicion, int _anchoPintado)
 {
-    if (IsKeyPressed(KEY_DOWN))
-        anchoBarraVida -= 10;
-    if (IsKeyPressed(KEY_UP))
-        anchoBarraVida += 10;
-    if (anchoBarraVida < 0)
-        anchoBarraVida = 0;
-    if (anchoBarraVida > Config::MAX_VIDA)
-        anchoBarraVida = Config::MAX_VIDA;
-    posicion = Convertir::MetrosEnPixeles(vehiculo->posicion);
-
-    // Como punto central del objeto es la posicion del objeto, debemos modificar
-    // esa posicion para dirigirse a la esquina superior izquierda del objeto
-    posicion.x -= Convertir::MetrosEnPixeles(vehiculo->espacio.width) * 0.5;
-    posicion.y -= Convertir::MetrosEnPixeles(vehiculo->espacio.height) * 0.5 + 10;
+    posicion = _posicion;
+    anchoPintado = _anchoPintado;
 }
 
 void BarraVida::dibujar()
 {
     espacio.x = posicion.x;
     espacio.y = posicion.y;
-    int a = (anchoBarraVida * Config::DIM_BARRAVIDA.x) / Config::MAX_VIDA;
-    Rectangle rvidaActual = {espacio.x, espacio.y, a, espacio.height};
+    int ancho = (anchoPintado * Config::DIM_BARRAVIDA.x) / Config::MAX_VIDA;
+    Rectangle rvidaActual = {espacio.x, espacio.y, ancho, espacio.height};
     // Dibujamos la barra de vida
     DrawRectangleRec(rvidaActual, BLUE);
     // Dibujamos el contorno de la vida

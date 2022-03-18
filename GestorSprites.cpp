@@ -64,7 +64,12 @@ void GestorSprites::generarSprites()
 
 
     Texture2D tbalas = Motor::retMotor().retGestorTexturas()->retTextura("balas");
-    insertar((Rectangle) {312.f, 108.f, 13.f, 11.f}, "bala1", tbalas);
+    insertar((Rectangle) {312.f, 108.f, 13.f, 11.f}, "balaBasica",    tbalas);
+    insertar((Rectangle) {400.f, 215.f, 9.f, 14.f},  "balaFuego",     tbalas);
+    insertar((Rectangle) {422.f, 215.f, 9.f, 14.f},  "balaElectrico", tbalas);
+    insertar((Rectangle) {444.f, 215.f, 9.f, 14.f},  "balaAura",      tbalas);
+    insertar((Rectangle) {466.f, 215.f, 9.f, 14.f},  "balaFuria",     tbalas);
+    insertar((Rectangle) {488.f, 215.f, 9.f, 14.f},  "balaFloreal",   tbalas);
 
     // Los sprites de las explosiones
     Texture2D texplosion = Motor::retMotor().retGestorTexturas()->retTextura("explosiones");
@@ -83,10 +88,20 @@ void GestorSprites::generarSprites()
     insertar((Rectangle) {130.f, 195.f, 45.f, 40.f}, "explosionNaranja1", texplosion);
     insertar((Rectangle) {70.f, 190.f, 50.f, 55.f},  "explosionNaranja2", texplosion);
     insertar((Rectangle) {5.f, 195.f, 55.f, 50.f},   "explosionNaranja3", texplosion);
+    // Algunas explosiones estan en la textura de las balas
 
+    insertar((Rectangle) {11.f, 102.f, 5.f, 5.f},    "explosionBalaVerde1", tbalas);
+    insertar((Rectangle) {17.f, 102.f, 8.f, 8.f},    "explosionBalaVerde2", tbalas);
+    insertar((Rectangle) {25.f, 100.f, 10.f, 10.f},  "explosionBalaVerde3", tbalas);
+    insertar((Rectangle) {35.f, 100.f, 10.f, 10.f},  "explosionBalaVerde4", tbalas);
+    insertar((Rectangle) {46.f, 98.f, 10.f, 10.f},   "explosionBalaVerde5", tbalas);
+    insertar((Rectangle) {57.f, 98.f, 11.f, 11.f},   "explosionBalaVerde6", tbalas);
+    insertar((Rectangle) {69.f, 97.f, 12.f, 12.f},   "explosionBalaVerde7", tbalas);
+    insertar((Rectangle) {83.f, 96.f, 12.f, 12.f},   "explosionBalaVerde8", tbalas);
+    insertar((Rectangle) {96.f, 95.f, 15.f, 15.f},   "explosionBalaVerde9", tbalas);
+    
     Texture2D tobstaculos = Motor::retMotor().retGestorTexturas()->retTextura("obstaculos");
     insertar((Rectangle) {0.f, 855.f, 209.f, 67.f},   "obstaculo1", tobstaculos);
-    
 }
 
 void GestorSprites::generarSpritesAnimados()
@@ -95,6 +110,7 @@ void GestorSprites::generarSpritesAnimados()
     insertar(retListaSprites("explosionGris"),     false, "explosionGris");
     insertar(retListaSprites("explosionAmarillo"), false, "explosionAmarillo");
     insertar(retListaSprites("explosionNaranja"),  false, "explosionNaranja");
+    insertar(retListaSprites("explosionBalaVerde"),  false, "explosionBalaVerde");
 }
 
 Sprite *GestorSprites::retSprite(const std::string nombre) const

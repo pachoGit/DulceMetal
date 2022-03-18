@@ -1,6 +1,7 @@
 #include "GestorFisicas.hpp"
 #include "ObjetoAyudas.hpp"
 #include "Config.hpp"
+#include "Convertir.hpp"
 
 #include <box2d/b2_collision.h>
 #include <algorithm>
@@ -78,43 +79,59 @@ void GestorFisicas::BeginContact(b2Contact *contacto)
     FisicasCuerpo *fcuerpo2 = (FisicasCuerpo *) contacto->GetFixtureB()->GetBody()->GetUserData().pointer;
     Objeto *o2 = fcuerpo2->objeto;
 
-    std::cout << "Colisionando: " << o1->nombre << " - " << o2->nombre << std::endl;
-
     if (contacto->IsTouching())
     {
-        std::cout << "Colisionando: " << std::endl;
+        o1->habilitarProcesadoFisicas = true;
+        o2->habilitarProcesadoFisicas = true;
+        std::cout << "Colisionando: " << o1->nombre << " - " << o2->nombre << std::endl;
         int npuntosContacto = contacto->GetManifold()->pointCount;
         b2WorldManifold puntosMundiales;
 
         contacto->GetWorldManifold(&puntosMundiales);
         std::cout << "Puntos de Contacto Mundiales..." << std::endl;
         for (int i = 0; i < npuntosContacto; ++i)
+        {
+            Rectangle r = {Convertir::MetrosEnPixeles(puntosMundiales.points[i].x), Convertir::MetrosEnPixeles(puntosMundiales.points[i].y), 10.f, 10.f};
+            DrawRectangleRec(r, GREEN);
             std::cout << "( " << puntosMundiales.points[i].x << ", " << puntosMundiales.points[i].y << ")" << std::endl;
+        }
     }
-    o1->habilitarProcesadoFisicas = true;
-    o2->habilitarProcesadoFisicas = true;
 }
 
 void GestorFisicas::EndContact(b2Contact *contacto)
 {
-    FisicasCuerpo *fcuerpo1 = (FisicasCuerpo *) contacto->GetFixtureA()->GetBody()->GetUserData().pointer;
-    Objeto *o1 = fcuerpo1->objeto;
-    FisicasCuerpo *fcuerpo2 = (FisicasCuerpo *) contacto->GetFixtureB()->GetBody()->GetUserData().pointer;
-    Objeto *o2 = fcuerpo2->objeto;
-
-    std::cout << "Dejo de Colisionar: " << o1->nombre << " - " << o2->nombre << std::endl;
-
-    // Solo habilitar las teclas para el jugador
-    if (o1->esClaseJugador())
-        o1->habilitarProcesadoFisicas = false;
-    if (o2->esClaseJugador())
-        o2->habilitarProcesadoFisicas = false;
 }
 
 void GestorFisicas::PreSolve(b2Contact *contacto, const b2Manifold *colector)
 {
+    Objeto *o1 = retObjetoDeFixture(contacto->GetFixtureA());
+    Objeto *o2 = retObjetoDeFixture(contacto->GetFixtureB());
+
+    if (o1 == nullptr || o2 == nullptr)
+        return;
+    
+    // Verificar que solo una vez debe llegar aqui :D
+    if (o1->esClaseBala() && (o2->esClaseJugador() || o2->esClaseAuto()))
+    {
+        // Generar el danio
+        Auto *vehiculo = ObjetoEnAuto(o2);
+        Bala *bala = ObjetoEnBala(o1);
+        int efecto = bala->efecto;
+        vehiculo->vida -= efecto;
+        bala->explotar();
+    }
+    if (o2->esClaseBala() && (o1->esClaseJugador() || o1->esClaseAuto()))
+    {
+        // Generar el danio
+        Auto *vehiculo = ObjetoEnAuto(o1);
+        Bala *bala = ObjetoEnBala(o2);
+        int efecto = bala->efecto;
+        vehiculo->vida -= efecto;
+        bala->explotar();
+    }
 }
 
 void GestorFisicas::PostSolve(b2Contact *contacto, const b2ContactImpulse *impulso)
 {
+    
 }

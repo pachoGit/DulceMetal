@@ -6,7 +6,7 @@
 
 #include "GestorSprites.hpp"
 #include "FisicasCuerpo.hpp"
-
+#include "Animacion.hpp"
 class FisicasCuerpo;
 
 enum TipoClaseObjeto
@@ -49,9 +49,15 @@ class Objeto
     // Identificar la clase de un objeto
     TipoClaseObjeto tipoClase;
 
+    // Cualquier tipo de animacion que objeto tenga que realizar
+    Animacion *animacion;
+
     // Nombre del objeto
     std::string nombre;
 
+    // Indica si el objeto se debe eliminar (de memoria)
+    bool marcadoParaBorrar;
+    
   public:
     
     Objeto(Vector2 _posicion);
@@ -61,6 +67,8 @@ class Objeto
 
     virtual void actualizar(float dt) = 0;
     
+    virtual void procesarFisicas() = 0;
+
     virtual void dibujar() = 0;
 
     /**** Funciones del procesado de Fisicas ****/

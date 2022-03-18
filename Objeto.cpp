@@ -21,6 +21,8 @@ Objeto::Objeto(Vector2 _posicion)
     habilitarProcesadoFisicas = false;
     tipoClase = CLASE_BASE;
     nombre = "Objeto";
+    animacion = nullptr;
+    marcadoParaBorrar = false;
 }
 
 Objeto::~Objeto()
@@ -32,9 +34,21 @@ Objeto::~Objeto()
         Motor::retMotor().retGestorFisicas()->destruirFCuerpo(fcuerpo);
         fcuerpo = nullptr;
     }
+    // Normalmente va a estar en nullptr pero por si acaso :D
+    if (animacion != nullptr)
+    {
+        delete animacion;
+        animacion = nullptr;
+    }
 }
 
 void Objeto::actualizar(float dt)
+{
+    if (animacion != nullptr)
+        animacion->actualizar(dt);
+}
+
+void Objeto::procesarFisicas()
 {
 }
 
@@ -45,6 +59,8 @@ void Objeto::dibujar()
     Rectangle vespacio = Convertir::MetrosEnPixeles(espacio);
     if (sprite != nullptr && visible)
         DrawTexturePro(sprite->textura, sprite->espacio, vespacio, (Vector2) {vespacio.width/2.f, vespacio.height/2.f}, angulo, RAYWHITE);
+    if (animacion != nullptr)
+        animacion->dibujar();
 }
 
 void Objeto::generarFisicasIniciales()
@@ -74,7 +90,7 @@ void Objeto::sincronizarObjetoConFisicas()
     posicion = fcuerpo->retPosicion();
     angulo = fcuerpo->retAngulo();
     // TODO: Al actualizar la velocidad, logra malos resultados al jugador
-    //velocidad = fcuerpo->retVelocidadLineal();
+    velocidad = fcuerpo->retVelocidadLineal();
 }
 
 void Objeto::mostrar() const
