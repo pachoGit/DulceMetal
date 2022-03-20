@@ -6,7 +6,11 @@
 enum TipoBala
 {
     BALA_BASICA,
-    BALA_MISIL
+    BALA_FUEGO,
+    BALA_ELECTRICO,
+    BALA_AURA,
+    BALA_FURIA,
+    BALA_FLOREAL
 };
 
 class Bala : public Objeto
@@ -16,9 +20,11 @@ class Bala : public Objeto
     // Cantidad de vida que puede quitar
     int efecto;
 
+    TipoBala tipo;
+
   public:
 
-    Bala(Vector2 _posicion, const std::string &_nombreBala);
+    Bala(Vector2 _posicion, TipoBala tipo);
 
     ~Bala();
 

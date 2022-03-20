@@ -38,7 +38,9 @@ class Config
     static int POSICION_ITER;
 
     // Dimension de la animacion de explosion (en pixeles)
-    static Vector2 DIM_EXPLOSION;
+    static Vector2 DIM_EXPLOSION_BALA;
+
+    static Vector2 DIM_EXPLOSION_AUTO;
 
     // Maxima vida de los autos y el personaje
     static int MAX_VIDA;

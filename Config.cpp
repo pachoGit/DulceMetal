@@ -21,7 +21,9 @@ int Config::VELOCIDAD_ITER = 6;
 
 int Config::POSICION_ITER = 2;
 
-Vector2 Config::DIM_EXPLOSION = {30.0f, 30.0f};
+Vector2 Config::DIM_EXPLOSION_BALA = {10.0f, 10.0f};
+
+Vector2 Config::DIM_EXPLOSION_AUTO = {50.0f, 50.0f};
 
 int Config::MAX_VIDA = 100;
 

@@ -57,10 +57,13 @@ void Objeto::dibujar()
     espacio.x = posicion.x;
     espacio.y = posicion.y;
     Rectangle vespacio = Convertir::MetrosEnPixeles(espacio);
+    if (animacion != nullptr)
+    {
+        animacion->dibujar();
+        return; // Ya no necesitaria dibujar lo de abajo
+    }
     if (sprite != nullptr && visible)
         DrawTexturePro(sprite->textura, sprite->espacio, vespacio, (Vector2) {vespacio.width/2.f, vespacio.height/2.f}, angulo, RAYWHITE);
-    if (animacion != nullptr)
-        animacion->dibujar();
 }
 
 void Objeto::generarFisicasIniciales()

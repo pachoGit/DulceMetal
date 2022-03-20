@@ -41,6 +41,7 @@ class Auto : public Objeto
 
     void actualizarBarraVida();
 
+
     /* Elimina aquellas balas que ya no son necesarias */
     void eliminarBalasDeMemoria();
 
@@ -59,6 +60,10 @@ class Auto : public Objeto
     void generarFisicasIniciales();
 
     void disparar(/* TipoBala bala*/);
+
+    // Realizar la explosion de explotar del auto
+    void explotar();
+
 };
 
 

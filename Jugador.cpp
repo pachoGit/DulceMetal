@@ -7,7 +7,7 @@
 
 Jugador::Jugador(Vector2 _posicion) : Auto(_posicion)
 {
-    sprite = Motor::retMotor().retGestorSprites()->retSprite("auto1");
+    sprite = Motor::retMotor().retGestorSprites()->retSprite("autoVerde");
     velocidad = {10.f, 10.f};
     tipoClase = CLASE_JUGADOR;
     nombre = "Jugador";
@@ -23,21 +23,8 @@ Jugador::~Jugador()
 
 void Jugador::actualizar(float dt)
 {
-    if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT))
-        angulo += 0.5f;
-    if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT))
-        angulo -= 0.5f;
-    if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))
-    {
-        posicion.x += std::sin(Convertir::GradosEnRadianes(angulo)) * dt * velocidad.x;
-        posicion.y -= std::cos(Convertir::GradosEnRadianes(angulo)) * dt * velocidad.y;
-    }
-    if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN))
-    {
-        posicion.x -= std::sin(Convertir::GradosEnRadianes(angulo)) * dt * velocidad.x;
-        posicion.y += std::cos(Convertir::GradosEnRadianes(angulo)) * dt * velocidad.y;
-    }
-    sincronizarFisicasConObjeto();
+    procesarFisicas();
+    sincronizarObjetoConFisicas();
 
     if (IsKeyPressed(KEY_SPACE))
         disparar();
@@ -57,6 +44,35 @@ void Jugador::actualizar(float dt)
 
 void Jugador::procesarFisicas()
 {
+    if (fcuerpo == nullptr)
+        return;
+
+    b2Body *cuerpo = fcuerpo->retCuerpoBox2D();
+
+    actualizarFriccion();
+
+
+    // TODO: Evitar que la variable aumente a mas de 360 grados, sin utilizar SetTransform, para reiniciar el conteo del angulo
+    if (IsKeyDown(KEY_D))
+        cuerpo->ApplyAngularImpulse(2.0f, true);
+    if (IsKeyDown(KEY_A))
+        cuerpo->ApplyAngularImpulse(-2.0f, true);
+    if (IsKeyReleased(KEY_A))
+        detenerRotacion();
+
+    if (IsKeyDown(KEY_W))
+    {
+        float longitud = espacio.height;
+        b2Vec2 impulso(longitud * std::sin(cuerpo->GetAngle()), longitud * std::cos(cuerpo->GetAngle()) * -1);
+        cuerpo->ApplyLinearImpulse(10.0f * impulso, cuerpo->GetWorldCenter(), true);
+    }
+
+    if (IsKeyDown(KEY_S))
+    {
+        float longitud = espacio.height;
+        b2Vec2 impulso(longitud * std::sin(cuerpo->GetAngle()), longitud * std::cos(cuerpo->GetAngle()) * -1);
+        cuerpo->ApplyLinearImpulse(-(10.0f * impulso), cuerpo->GetWorldCenter(), true);
+    }
 }
 
 void Jugador::dibujar()
@@ -69,9 +85,12 @@ void Jugador::disparar()
     std::vector<Vector2> vertices = Util::retVerticesRectangulo(espacio, (Vector2) {espacio.width / 2.f, espacio.height / 2.f}, angulo);
     Vector2 arribaIzquierda = vertices.at(0);
     Vector2 arribaDerecha = vertices.at(1);
-    Bala *b1 = new Bala((Vector2){arribaIzquierda.x, arribaIzquierda.y}, "balaAura");
+
+    TipoBala tbala = BALA_FURIA;
+
+    Bala *b1 = new Bala((Vector2){arribaIzquierda.x, arribaIzquierda.y}, tbala);
     b1->angulo = angulo;
-    Bala *b2 = new Bala((Vector2){arribaDerecha.x, arribaDerecha.y}, "balaAura");
+    Bala *b2 = new Bala((Vector2){arribaDerecha.x, arribaDerecha.y}, tbala);
     b2->angulo = angulo;
 
     balas.push_back(b1);

@@ -4,16 +4,39 @@
 #include "Convertir.hpp"
 #include "Animacion.hpp"
 
-Bala::Bala(Vector2 _posicion, const std::string &_nombreBala) : Objeto(_posicion)
+Bala::Bala(Vector2 _posicion, TipoBala _tipo) : Objeto(_posicion)
 {
     espacio.width = Config::DIM_BALA_NORMAL.x;
     espacio.height = Config::DIM_BALA_NORMAL.y;
-    sprite = Motor::retMotor().retGestorSprites()->retSprite(_nombreBala);
+    tipo = _tipo;
+    std::string nombre;
+    switch (tipo)
+    {
+        case BALA_BASICA:
+            nombre = "balaBasica";
+            break;
+        case BALA_FUEGO:
+            nombre = "balaFuego";
+            break;
+        case BALA_ELECTRICO:
+            nombre = "balaBasica";
+            break;
+        case BALA_AURA:
+            nombre = "balaAura";
+            break;
+        case BALA_FURIA:
+            nombre = "balaFuria";
+            break;
+        case BALA_FLOREAL:
+            nombre = "balaFloreal";
+            break;
+    }
+    sprite = Motor::retMotor().retGestorSprites()->retSprite(nombre);
     velocidad = {8.0f, 8.0f};
     angulo = 0.f; // Para que este a la misma direccion de la textura del auto :D
     tipoClase = CLASE_BALA;
     nombre = "Bala";
-    efecto = (_nombreBala == "balaBasica" ? 10 : 20);
+    efecto = (tipo == BALA_BASICA ? 10 : 20);
         
     generarFisicasIniciales();
 }
@@ -61,6 +84,28 @@ void Bala::explotar()
         delete animacion;
         animacion = nullptr;
     }
-    animacion = new Animacion(Convertir::MetrosEnPixeles(posicion), "explosionBlanca", 10);
+    TipoAnimacion tanimacion;
+    switch (tipo)
+    {
+        case BALA_BASICA:
+            tanimacion = ANIM_EXPLOSION_BALA_AMARILLA;
+            break;
+        case BALA_FUEGO:
+            tanimacion = ANIM_EXPLOSION_BALA_AMARILLA;
+            break;
+        case BALA_ELECTRICO:
+            tanimacion = ANIM_EXPLOSION_BALA_AMARILLA;
+            break;
+        case BALA_AURA:
+            tanimacion = ANIM_EXPLOSION_BALA_AZUL;
+            break;
+        case BALA_FURIA:
+            tanimacion = ANIM_EXPLOSION_BALA_ROJA;
+            break;
+        case BALA_FLOREAL:
+            tanimacion = ANIM_EXPLOSION_BALA_VERDE;
+            break;
+    }
+    animacion = new Animacion(Convertir::MetrosEnPixeles(posicion), tanimacion, 10);
     marcadoParaBorrar = true;
 }

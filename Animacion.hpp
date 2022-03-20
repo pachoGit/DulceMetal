@@ -5,6 +5,20 @@
 
 #include "GestorSprites.hpp"
 
+enum TipoAnimacion
+{
+    ANIM_EXPLOSION_BLANCA,
+    ANIM_EXPLOSION_GRIS,
+    ANIM_EXPLOSION_AMARILLO,
+    ANIM_EXPLOSION_NARANJA,
+    ANIM_EXPLOSION_BALA_VERDE,
+    ANIM_EXPLOSION_BALA_AMARILLA,
+    ANIM_EXPLOSION_BALA_ROJA,
+    ANIM_EXPLOSION_BALA_AZUL
+};
+
+
+
 class Animacion
 {
   public:
@@ -35,7 +49,7 @@ class Animacion
 
   public:
     
-    Animacion(Vector2 _posicion, std::string nombre, int _velocidadCuadro);
+    Animacion(Vector2 _posicion, TipoAnimacion tipo, int _velocidadCuadro);
 
     ~Animacion();
     
