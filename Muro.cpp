@@ -19,7 +19,7 @@ Muro::~Muro() {}
 
 void Muro::actualizar(float dt)
 {
-    //sincronizarFisicasConObjeto();
+    procesarFisicas();
     sincronizarObjetoConFisicas();
 }
 

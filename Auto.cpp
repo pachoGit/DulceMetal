@@ -53,7 +53,7 @@ void Auto::actualizar(float dt)
 
 void Auto::procesarFisicas()
 {
-    
+    actualizarFriccion();
 }
 
 void Auto::dibujar()
@@ -115,13 +115,14 @@ void Auto::actualizarFriccion()
     b2Body *cuerpo = fcuerpo->retCuerpoBox2D();
     if (cuerpo == nullptr)
         return;
-    // Velocidad lateral
+    // Eliminar la velocidad lateral
     b2Vec2 impulso = cuerpo->GetMass() * -retVelocidadLateral();
     cuerpo->ApplyLinearImpulse(impulso, cuerpo->GetWorldCenter(), true);
 
+    // Reducir la rotacion
     detenerRotacion();
     
-    // Velocidad delantera
+    // Reducir la velocidad delantera
     b2Vec2 vdelantera = retVelocidadDelantera();
     float v = vdelantera.Normalize();
     float arrastre = -2 * v;
@@ -151,7 +152,7 @@ void Auto::disparar()
     Vector2 arribaDerecha = vertices.at(1);
     Vector2 p = {arribaIzquierda.x, arribaIzquierda.y};
     Bala *nueva = new Bala(p, BALA_AURA);
-    nueva->angulo = angulo;
+    nueva->ingAngulo(angulo);
     balas.push_back(nueva);
 }
 

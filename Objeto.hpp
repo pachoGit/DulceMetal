@@ -79,6 +79,10 @@ class Objeto
     // Ingresar las fisicas para este cuerpo
     void ingFCuerpo(FisicasCuerpo *_fcuerpo);
 
+    // Cambia el angulo del objeto, ademas del angulo en el objeto de las fisicas
+    // Cambiar el angulo con esta funcion y NO directamente
+    void ingAngulo(float _angulo);
+
     // Sincronizar los datos de las fisicas con el objeto
     void sincronizarFisicasConObjeto();
 

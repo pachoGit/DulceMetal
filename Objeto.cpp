@@ -82,6 +82,14 @@ void Objeto::ingFCuerpo(FisicasCuerpo *_fcuerpo)
     fcuerpo->transformar(posicion, angulo);
 }
 
+void Objeto::ingAngulo(float _angulo)
+{
+    angulo = _angulo;
+    if (fcuerpo == nullptr)
+        return;
+    fcuerpo->ingAngulo(angulo);
+}
+
 void Objeto::sincronizarFisicasConObjeto()
 {
     fcuerpo->transformar(posicion, angulo);

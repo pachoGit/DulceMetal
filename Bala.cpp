@@ -54,14 +54,30 @@ void Bala::actualizar(float dt)
         animacion->actualizar(dt);
         return;
     }
+    /*
     posicion.x += std::sin(Convertir::GradosEnRadianes(angulo)) * dt * velocidad.x;
     posicion.y -= std::cos(Convertir::GradosEnRadianes(angulo)) * dt * velocidad.y;
-    sincronizarFisicasConObjeto();
+    */
+    procesarFisicas();
+    sincronizarObjetoConFisicas();
 }
 
 void Bala::procesarFisicas()
 {
+    b2Body *cuerpo = fcuerpo->retCuerpoBox2D();
+    if (cuerpo == nullptr)
+        return;
     
+    b2Vec2 vactual = cuerpo->GetLinearVelocity();
+    // Dar el impulso para su movimiento
+    if (vactual.x == 0 && vactual.y == 0) // No tiene velocidad :D
+    {
+        // Dar el impulso inicial
+        float longitud = 1.0f; // Esto es para obtener la direccion de la bala
+        b2Vec2 direccion(longitud * std::sin(cuerpo->GetAngle()), longitud * std::cos(cuerpo->GetAngle()) * -1);
+        b2Vec2 impulso = 0.5f * direccion;
+        cuerpo->ApplyLinearImpulse(impulso, cuerpo->GetWorldCenter(), true);
+    }
 }
 
 void Bala::dibujar()

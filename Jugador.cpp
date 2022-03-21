@@ -28,6 +28,7 @@ void Jugador::actualizar(float dt)
 
     if (IsKeyPressed(KEY_SPACE))
         disparar();
+
     for (auto &bala : balas)
         bala->actualizar(dt);
 
@@ -48,10 +49,7 @@ void Jugador::procesarFisicas()
         return;
 
     b2Body *cuerpo = fcuerpo->retCuerpoBox2D();
-
     actualizarFriccion();
-
-
     // TODO: Evitar que la variable aumente a mas de 360 grados, sin utilizar SetTransform, para reiniciar el conteo del angulo
     if (IsKeyDown(KEY_D))
         cuerpo->ApplyAngularImpulse(2.0f, true);
@@ -89,9 +87,9 @@ void Jugador::disparar()
     TipoBala tbala = BALA_FURIA;
 
     Bala *b1 = new Bala((Vector2){arribaIzquierda.x, arribaIzquierda.y}, tbala);
-    b1->angulo = angulo;
+    b1->ingAngulo(angulo);
     Bala *b2 = new Bala((Vector2){arribaDerecha.x, arribaDerecha.y}, tbala);
-    b2->angulo = angulo;
+    b2->ingAngulo(angulo);
 
     balas.push_back(b1);
     balas.push_back(b2);

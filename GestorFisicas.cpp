@@ -116,18 +116,24 @@ void GestorFisicas::PreSolve(b2Contact *contacto, const b2Manifold *colector)
         // Generar el danio
         Auto *vehiculo = ObjetoEnAuto(o2);
         Bala *bala = ObjetoEnBala(o1);
-        int efecto = bala->efecto;
-        vehiculo->vida -= efecto;
-        bala->explotar();
+        if (bala->marcadoParaBorrar == false)
+        {
+            int efecto = bala->efecto;
+            vehiculo->vida -= efecto;
+            bala->explotar();
+        }
     }
     if (o2->esClaseBala() && (o1->esClaseJugador() || o1->esClaseAuto()))
     {
         // Generar el danio
         Auto *vehiculo = ObjetoEnAuto(o1);
         Bala *bala = ObjetoEnBala(o2);
-        int efecto = bala->efecto;
-        vehiculo->vida -= efecto;
-        bala->explotar();
+        if (bala->marcadoParaBorrar == false)
+        {
+            int efecto = bala->efecto;
+            vehiculo->vida -= efecto;
+            bala->explotar();
+        }
     }
 }
 
