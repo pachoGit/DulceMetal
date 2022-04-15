@@ -8,11 +8,13 @@
 #include "Objeto.hpp"
 #include "Auto.hpp"
 #include "Jugador.hpp"
-#include "Muro.hpp"
+#include "Obstaculo.hpp"
 
 #include "Convertir.hpp"
 #include "Config.hpp"
 #include "Animacion.hpp"
+
+#include "Mapa.hpp"
 
 #include <iostream>
 
@@ -32,9 +34,11 @@ int main()
     Auto *a1 = new Auto((Vector2) {2.f, 5.f});
 
     Jugador *a2 = new Jugador((Vector2) {5.f, 10.f});
-    Muro *m1 = new Muro((Vector2) {15.f, 12.f});
-    Animacion *b1 = new Animacion((Vector2) {100.f, 20.f}, ANIM_EXPLOSION_BALA_AZUL, 10);
+    Obstaculo *m1 = new Obstaculo((Vector2) {15.f, 12.f}, OBSTACULO_ARBOL);
+    Animacion *b1 = new Animacion((Vector2) {20.f, 12.f}, ANIM_VIDA);
     b1->enBucle = true;
+
+    Mapa *mapa = new Mapa();
 
     while (!WindowShouldClose())
     {
@@ -62,13 +66,17 @@ int main()
         m1->actualizar(dt);
         b1->actualizar(dt);
 
+        mapa->actualizar(dt);
+
         if (a1 != nullptr)
             a1->dibujar();
 
         a2->dibujar();
         m1->dibujar();
         b1->dibujar();
-        
+
+        mapa->dibujar();
+
         motor.retGestorFisicas()->limpiarFuerzas();
 
         EndDrawing();
@@ -80,6 +88,7 @@ int main()
     delete a2;
     delete m1;
     delete b1;
+    delete mapa;
 
     motor.destruirModulos();
 

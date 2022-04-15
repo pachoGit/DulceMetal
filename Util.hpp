@@ -45,6 +45,16 @@ class Util
      */
     static float pendiente(const Vector2 p1, const Vector2 p2);
 
+    /*
+     * Calcular el punto central aproximado de una linea (simple calculo)
+     */
+    static Vector2 retPuntoCentral(const Vector2 p1, const Vector2 p2);
+
+    /*
+     * Calcular la distancia entre dos puntos
+     */
+    static float distancia(const Vector2 p1, const Vector2 p2);
+
 };
 
 

@@ -14,7 +14,7 @@ enum TipoClaseObjeto
     CLASE_BASE, // es decir, de tipo "Objeto"
     CLASE_AUTO,
     CLASE_BALA,
-    CLASE_MURO,
+    CLASE_OBSTACULO,
     CLASE_JUGADOR
 };
 
@@ -73,9 +73,6 @@ class Objeto
 
     /**** Funciones del procesado de Fisicas ****/
 
-    // Inicializa la variable "fcuerpo"
-    virtual void generarFisicasIniciales() = 0;
-
     // Ingresar las fisicas para este cuerpo
     void ingFCuerpo(FisicasCuerpo *_fcuerpo);
 
@@ -96,6 +93,7 @@ class Objeto
     inline bool esClaseBala() const { return (tipoClase == CLASE_BALA); }
     inline bool esClaseAuto() const { return (tipoClase == CLASE_AUTO); }
     inline bool esClaseJugador() const { return (tipoClase == CLASE_JUGADOR); }
+    inline bool esClaseObstaculo() const { return (tipoClase == CLASE_OBSTACULO); }
 
     /**** Funciones extras o de debug ****/
 

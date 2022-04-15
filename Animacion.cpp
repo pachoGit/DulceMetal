@@ -1,64 +1,20 @@
 #include "Animacion.hpp"
-#include "Config.hpp"
 #include "Motor.hpp"
+#include "Convertir.hpp"
 
-Animacion::Animacion(Vector2 _posicion, TipoAnimacion tipo, int _velocidadCuadro)
+Animacion::Animacion(Vector2 _posicion, TipoAnimacion tipo)
 {
+    auto data = dataAnimacion[tipo];
     espacio.x = _posicion.x;
     espacio.y = _posicion.y;
-    Vector2 dimension; // Dimensiones de la animacion
-    std::string nombre; // Nombre de la  animacion
-    // TODO: Esto si se deberia estructurar :D, me da asco y todo :D
-    switch (tipo)
-    {
-        case ANIM_EXPLOSION_BLANCA:
-        case ANIM_EXPLOSION_GRIS:
-        case ANIM_EXPLOSION_AMARILLO:
-        case ANIM_EXPLOSION_NARANJA:
-            dimension.x = Config::DIM_EXPLOSION_AUTO.x;
-            dimension.y = Config::DIM_EXPLOSION_AUTO.y;
-            break;
-        default: // Explosiones de las balas
-            dimension.x = Config::DIM_EXPLOSION_BALA.x;
-            dimension.y = Config::DIM_EXPLOSION_BALA.y;
-    }
-
-    switch (tipo)
-    {
-        case ANIM_EXPLOSION_BLANCA:
-            nombre = "explosionBlanca";
-            break;
-        case ANIM_EXPLOSION_GRIS:
-            nombre = "explosionGris";
-            break;
-        case ANIM_EXPLOSION_AMARILLO:
-            nombre = "explosionAmarillo";
-            break;
-        case ANIM_EXPLOSION_NARANJA:
-            nombre = "explosionNaranja";
-            break;
-        case ANIM_EXPLOSION_BALA_VERDE:
-            nombre = "explosionBalaVerde";
-            break;
-        case ANIM_EXPLOSION_BALA_AMARILLA:
-            nombre = "explosionBalaAmarilla";
-            break;
-        case ANIM_EXPLOSION_BALA_ROJA:
-            nombre = "explosionBalaRoja";
-            break;
-        case ANIM_EXPLOSION_BALA_AZUL:
-            nombre = "explosionBalaAzul";
-            break;
-    }
-    
-    espacio.width  = dimension.x;
-    espacio.height = dimension.y;
-    animacion = Motor::retMotor().retGestorSprites()->retSpriteAnimado(nombre);
+    espacio.width = data.dimension.x;
+    espacio.height = data.dimension.y;
+    animacion = Motor::retMotor().retGestorSprites()->retSpriteAnimado(data.nombre);
     //if (animacion != nullptr)
     enBucle = animacion->enBucle;
     angulo = 0.0f;
     cuadroActual = 0;
-    velocidadCuadro = _velocidadCuadro;
+    velocidadCuadro = data.velocidadCuadro;
     contadorCuadro = 0;
     estaCorriendo = true;
 }
@@ -96,5 +52,6 @@ void Animacion::dibujar()
     if (animacion == nullptr)
         return;
     Sprite *sprite = animacion->sprites.at(cuadroActual);
-    DrawTexturePro(sprite->textura, sprite->espacio, espacio, (Vector2) {espacio.width / 2.f, espacio.height / 2.f}, angulo, RAYWHITE);
+    Rectangle vespacio = Convertir::MetrosEnPixeles(espacio);
+    DrawTexturePro(sprite->textura, sprite->espacio, vespacio, (Vector2) {vespacio.width / 2.f, vespacio.height / 2.f}, angulo, RAYWHITE);
 }

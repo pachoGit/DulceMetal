@@ -118,7 +118,45 @@ void GestorSprites::generarSprites()
     insertar((Rectangle) {46.f, 158.f, 10.f, 10.f},  "explosionBalaAzul5", tbalas);
 
     Texture2D tobstaculos = Motor::retMotor().retGestorTexturas()->retTextura("obstaculos");
-    insertar((Rectangle) {0.f, 855.f, 209.f, 67.f},   "obstaculo1", tobstaculos);
+    insertar((Rectangle) {5.f, 740.f, 195.f, 50.f},   "muroGris", tobstaculos);
+    insertar((Rectangle) {215.f, 740.f, 195.f, 50.f}, "muroNaranja", tobstaculos);
+    insertar((Rectangle) {5.f, 865.f, 195.f, 50.f},   "muroGrisRace", tobstaculos);
+    insertar((Rectangle) {5.f, 800.f, 195.f, 50.f},   "muroNaranjaRace", tobstaculos);
+    insertar((Rectangle) {860.f, 170.f, 46.f, 40.f},  "cono", tobstaculos);
+    insertar((Rectangle) {662.f, 513.f, 127.f, 127.f},  "carpa", tobstaculos);
+    insertar((Rectangle) {540.f, 790.f, 140.f, 140.f},  "arbol", tobstaculos);
+    
+    // Las texturas de armas y vida que se recogen en campo de batalla :D
+    Texture2D trecogibles = Motor::retMotor().retGestorTexturas()->retTextura("recogibles");
+    insertar((Rectangle) {0.f,   0.f, 40.f, 40.f},   "armaRayo1", trecogibles);
+    insertar((Rectangle) {40.f,  0.f, 40.f, 40.f},   "armaRayo2", trecogibles);
+    insertar((Rectangle) {80.f,  0.f, 40.f, 40.f},   "armaRayo3", trecogibles);
+    insertar((Rectangle) {120.f, 0.f, 40.f, 40.f},   "armaRayo4", trecogibles);
+                                                     
+    insertar((Rectangle) {0.f,   40.f, 40.f, 40.f},  "armaFuego1", trecogibles);
+    insertar((Rectangle) {40.f,  40.f, 40.f, 40.f},  "armaFuego2", trecogibles);
+    insertar((Rectangle) {80.f,  40.f, 40.f, 40.f},  "armaFuego3", trecogibles);
+    insertar((Rectangle) {120.f, 40.f, 40.f, 40.f},  "armaFuego4", trecogibles);
+                                                     
+    insertar((Rectangle) {0.f,   80.f, 40.f, 40.f},  "armaAura1", trecogibles);
+    insertar((Rectangle) {40.f,  80.f, 40.f, 40.f},  "armaAura2", trecogibles);
+    insertar((Rectangle) {80.f,  80.f, 40.f, 40.f},  "armaAura3", trecogibles);
+    insertar((Rectangle) {120.f, 80.f, 40.f, 40.f},  "armaAura4", trecogibles);
+
+    insertar((Rectangle) {0.f,   120.f, 40.f, 40.f}, "armaFloreal1", trecogibles);
+    insertar((Rectangle) {40.f,  120.f, 40.f, 40.f}, "armaFloreal2", trecogibles);
+    insertar((Rectangle) {80.f,  120.f, 40.f, 40.f}, "armaFloreal3", trecogibles);
+    insertar((Rectangle) {120.f, 120.f, 40.f, 40.f}, "armaFloreal4", trecogibles);
+
+    insertar((Rectangle) {0.f,   160.f, 40.f, 40.f}, "armaFuria1", trecogibles);
+    insertar((Rectangle) {40.f,  160.f, 40.f, 40.f}, "armaFuria2", trecogibles);
+    insertar((Rectangle) {80.f,  160.f, 40.f, 40.f}, "armaFuria3", trecogibles);
+    insertar((Rectangle) {120.f, 160.f, 40.f, 40.f}, "armaFuria4", trecogibles);
+
+    insertar((Rectangle) {0.f,   200.f, 40.f, 40.f}, "vida1", trecogibles);
+    insertar((Rectangle) {40.f,  200.f, 40.f, 40.f}, "vida2", trecogibles);
+    insertar((Rectangle) {80.f,  200.f, 40.f, 40.f}, "vida3", trecogibles);
+    insertar((Rectangle) {120.f, 200.f, 40.f, 40.f}, "vida4", trecogibles);
 }
 
 void GestorSprites::generarSpritesAnimados()
@@ -131,6 +169,13 @@ void GestorSprites::generarSpritesAnimados()
     insertar(retListaSprites("explosionBalaAmarilla"),  false, "explosionBalaAmarilla");
     insertar(retListaSprites("explosionBalaRoja"),      false, "explosionBalaRoja");
     insertar(retListaSprites("explosionBalaAzul"),      false, "explosionBalaAzul");
+
+    insertar(retListaSprites("armaRayo"),    false, "armaRayo");
+    insertar(retListaSprites("armaFuego"),   false, "armaFuego");
+    insertar(retListaSprites("armaAura"),    false, "armaAura");
+    insertar(retListaSprites("armaFloreal"), false, "armaFloreal");
+    insertar(retListaSprites("armaFuria"),   false, "armaFuria");
+    insertar(retListaSprites("vida"),        false, "vida");
 }
 
 Sprite *GestorSprites::retSprite(const std::string nombre) const

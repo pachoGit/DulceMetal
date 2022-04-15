@@ -15,10 +15,16 @@ Auto::Auto(Vector2 _posicion) : Objeto(_posicion)
     sprite = Motor::retMotor().retGestorSprites()->retSprite("autoAzul");
     velocidad = {3.0f, 3.0f};
     tipoClase = CLASE_AUTO;
+    fcuerpo = Motor::retMotor().retGestorFisicas()->crearFCuerpo(this,
+                                                                 FCUERPO_DEFECTO,
+                                                                 FMaterial(80.f, 0.0f, 0.0f),
+                                                                 FGRUPO_AUTO,
+                                                                 (FGrupoColision) (FGRUPO_AUTO | FGRUPO_JUGADOR | FGRUPO_OBSTACULO | FGRUPO_BALA));
     vida = Config::MAX_VIDA;
     nombre = "Auto";
-
-    generarFisicasIniciales();
+    inventario = new Inventario();
+    tipoBala = BALA_BASICA;
+    
     iniciarBarraVida();
 }
 
@@ -35,6 +41,11 @@ Auto::~Auto()
     {
         delete barraVida;
         barraVida = nullptr;
+    }
+    if (inventario != nullptr)
+    {
+        delete inventario;
+        inventario = nullptr;
     }
 }
 
@@ -64,14 +75,6 @@ void Auto::dibujar()
         bala->dibujar();
     // Debug fisicas
     //fcuerpo->dibujar();
-}
-
-void Auto::generarFisicasIniciales()
-{
-    fcuerpo = new FisicasCuerpo(this, FCUERPO_DEFECTO);
-    if (fcuerpo == nullptr)
-        return;
-    fcuerpo->agregarColisionador(FMaterial(80.f, 0.0f, 0.0f), FGRUPO_AUTO, (FGrupoColision) (FGRUPO_AUTO | FGRUPO_JUGADOR | FGRUPO_OBSTACULO | FGRUPO_BALA));
 }
 
 b2Vec2 Auto::retVelocidadLateral()
@@ -165,7 +168,7 @@ void Auto::explotar()
         delete animacion;
         animacion = nullptr;
     }
-    animacion = new Animacion(Convertir::MetrosEnPixeles(posicion), ANIM_EXPLOSION_NARANJA, 10);
+    animacion = new Animacion(posicion, ANIM_EXPLOSION_NARANJA);
     marcadoParaBorrar = true;
 }
 

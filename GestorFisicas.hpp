@@ -35,7 +35,8 @@ class GestorFisicas : public b2ContactListener
     // Cuerpos definidos por mi :D
     FisicasCuerpo *crearFCuerpo(Objeto *objeto, FCuerpoBanderas fbanderas);
 
-    FisicasCuerpo *crearFCuerpo(Objeto *objeto, FCuerpoBanderas fbanderas, const FMaterial &material);
+    FisicasCuerpo *crearFCuerpo(Objeto *objeto, FCuerpoBanderas fbanderas, const FMaterial &material,
+                                FGrupoColision miGrupo, FGrupoColision colisionarCon);
 
     void destruirFCuerpo(FisicasCuerpo *cuerpo);
 

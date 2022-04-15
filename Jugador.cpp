@@ -10,16 +10,31 @@ Jugador::Jugador(Vector2 _posicion) : Auto(_posicion)
     sprite = Motor::retMotor().retGestorSprites()->retSprite("autoVerde");
     velocidad = {10.f, 10.f};
     tipoClase = CLASE_JUGADOR;
+    // Creado al pasar por el constructor de "Auto.cpp"
+    if (fcuerpo != nullptr)
+        Motor::retMotor().retGestorFisicas()->destruirFCuerpo(fcuerpo);
+    fcuerpo = Motor::retMotor().retGestorFisicas()->crearFCuerpo(this,
+                                                                 FCUERPO_DEFECTO,
+                                                                 FMaterial(80.f, 0.0f, 0.0f),
+                                                                 FGRUPO_JUGADOR,
+                                                                 (FGrupoColision) (FGRUPO_AUTO | FGRUPO_OBSTACULO));
     nombre = "Jugador";
 
     iniciarBarraVida();
-    generarFisicasIniciales();
+    if (inventario)
+    {
+        inventario->ingresar(BALA_AURA, 5);
+        inventario->ingresar(BALA_FUEGO, 5);
+        inventario->ingresar(BALA_FLOREAL, 5);
+    }
 }
 
 Jugador::~Jugador()
 {
     // Se borra en "Auto.cpp"
 }
+
+#include <iostream>
 
 void Jugador::actualizar(float dt)
 {
@@ -40,6 +55,23 @@ void Jugador::actualizar(float dt)
             bala->explotar();
     }
     
+    // Manejo del inventario
+    if (IsKeyPressed(KEY_Q))
+        if (!inventario->estaVacio())
+        {
+            inventario->retroceder();
+            std::cout << "Retrocediendo..." << std::endl;
+        }
+
+    if (IsKeyPressed(KEY_E))
+        if (!inventario->estaVacio())
+        {
+            inventario->avanzar();
+            std::cout << "Avanzando..." << std::endl;
+        }
+
+    tipoBala = inventario->retActual()->tipoBala;
+
     eliminarBalasDeMemoria();
 }
 
@@ -84,26 +116,17 @@ void Jugador::disparar()
     Vector2 arribaIzquierda = vertices.at(0);
     Vector2 arribaDerecha = vertices.at(1);
 
-    TipoBala tbala = BALA_FURIA;
+    Bala *b1 = new Bala(Util::retPuntoCentral(arribaIzquierda, arribaDerecha), tipoBala);
+    b1->ingAngulo(angulo);
 
+    balas.push_back(b1);
+
+    /*
     Bala *b1 = new Bala((Vector2){arribaIzquierda.x, arribaIzquierda.y}, tbala);
     b1->ingAngulo(angulo);
     Bala *b2 = new Bala((Vector2){arribaDerecha.x, arribaDerecha.y}, tbala);
     b2->ingAngulo(angulo);
-
     balas.push_back(b1);
     balas.push_back(b2);
-}
-
-void Jugador::generarFisicasIniciales()
-{
-    if (fcuerpo != nullptr)
-    {
-        delete fcuerpo;
-        fcuerpo = nullptr;
-    }
-    fcuerpo = new FisicasCuerpo(this, FCUERPO_DEFECTO);
-    if (fcuerpo == nullptr)
-        return;
-    fcuerpo->agregarColisionador(FMaterial(80.f, 0.0f, 0.0f), FGRUPO_JUGADOR, (FGrupoColision) (FGRUPO_AUTO | FGRUPO_OBSTACULO));
+    */
 }

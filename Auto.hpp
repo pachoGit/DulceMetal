@@ -7,6 +7,8 @@
 #include "Bala.hpp"
 #include "BarraVida.hpp"
 
+#include "Inventario.hpp"
+
 class Auto : public Objeto
 {
   public:
@@ -19,6 +21,12 @@ class Auto : public Objeto
 
     // Lista de balas que esta lanzando el auto
     std::vector<Bala *> balas;
+
+    // Las armas que posee el auto
+    Inventario *inventario;
+
+    // Tipo de bala actual que dispara el auto
+    TipoBala tipoBala;
 
   protected:
 
@@ -41,7 +49,6 @@ class Auto : public Objeto
 
     void actualizarBarraVida();
 
-
     /* Elimina aquellas balas que ya no son necesarias */
     void eliminarBalasDeMemoria();
 
@@ -57,13 +64,10 @@ class Auto : public Objeto
 
     void dibujar();
 
-    void generarFisicasIniciales();
-
     void disparar(/* TipoBala bala*/);
 
     // Realizar la explosion de explotar del auto
     void explotar();
-
 };
 
 

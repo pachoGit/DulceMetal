@@ -25,8 +25,17 @@ class Config
     // Dimensiones (en metros) por defecto de una "Bala"
     static Vector2 DIM_BALA_NORMAL;
 
-    // dimensiones (en metros) por defecto de una "Muro"
+    // Dimensiones (en metros) por defecto del obstaculo "Muro"
     static Vector2 DIM_MURO;
+
+    // Dimensiones (en metros) por defecto del obstaculo "Carpa"
+    static Vector2 DIM_CARPA;
+
+    // Dimensiones (en metros) por defecto del obstaculo "Cono"
+    static Vector2 DIM_CONO;
+
+    // Dimensiones (en metros) por defecto del obstaculo "Arbol"
+    static Vector2 DIM_ARBOL;
 
     // Dimensiones (en metros) por defecto de un bloque de mapa
     //static Vector2 DIM_BLOQUEMAPA;
@@ -37,7 +46,7 @@ class Config
     // Iteraciones de posiciones para la simulacion de la fisica
     static int POSICION_ITER;
 
-    // Dimension de la animacion de explosion (en pixeles)
+    // Dimension de la animacion de explosion (en metros)
     static Vector2 DIM_EXPLOSION_BALA;
 
     static Vector2 DIM_EXPLOSION_AUTO;
@@ -47,6 +56,9 @@ class Config
 
     // Dimensiones de la barra de vida (en pixeles)
     static Vector2 DIM_BARRAVIDA;
+
+    // Dimensiones de las armas (recogibles) en metros
+    static Vector2 DIM_ARMA;
 };
 
 

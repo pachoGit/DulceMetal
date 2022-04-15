@@ -85,3 +85,22 @@ float Util::pendiente(const Vector2 p1, const Vector2 p2)
 {
     return ((p1.y - p2.y) / (p1.x - p2.x));
 }
+
+Vector2 Util::retPuntoCentral(Vector2 p1, Vector2 p2)
+{
+    float Lx = std::abs(p1.x - p2.x);
+    float Ly = std::abs(p1.y - p2.y);
+
+    Vector2 centro;
+    centro.x = std::min(p1.x, p2.x) + (Lx / 2.f);
+    centro.y = std::min(p1.y, p2.y) + (Ly / 2.f);
+    return centro;
+}
+
+float Util::distancia(const Vector2 p1, const Vector2 p2)
+{
+    float lx = std::abs(p1.x - p2.x);
+    float ly = std::abs(p1.y - p2.y);
+    
+    return std::sqrt(lx * lx + ly * ly);
+}

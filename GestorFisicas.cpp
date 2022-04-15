@@ -23,8 +23,9 @@ GestorFisicas::~GestorFisicas()
         delete mundoBox2D;
         mundoBox2D = nullptr;
     }
-    for (auto &fcuerpo : cuerposBox2D)
-        delete fcuerpo;
+    if (cuerposBox2D.size() > 0)
+        for (auto &fcuerpo : cuerposBox2D)
+            delete fcuerpo;
 }
 
 b2Body *GestorFisicas::crearCuerpoBox2D(const b2BodyDef *def)
@@ -44,13 +45,12 @@ FisicasCuerpo *GestorFisicas::crearFCuerpo(Objeto *objeto, FCuerpoBanderas fband
     return nuevo;
 }
 
-FisicasCuerpo *GestorFisicas::crearFCuerpo(Objeto *objeto, FCuerpoBanderas fbanderas, const FMaterial &material)
+FisicasCuerpo *GestorFisicas::crearFCuerpo(Objeto *objeto, FCuerpoBanderas fbanderas, const FMaterial &material,
+                                           FGrupoColision miGrupo, FGrupoColision colisionarCon)
 {
     FisicasCuerpo *nuevo = crearFCuerpo(objeto, fbanderas);
-    /*
     if (nuevo)
-        nuevo->agregarColisionador(material);
-    */
+        nuevo->agregarColisionador(material, miGrupo, colisionarCon);
     return nuevo;
 }
 
@@ -58,7 +58,7 @@ void GestorFisicas::destruirFCuerpo(FisicasCuerpo *cuerpo)
 {
     if (!cuerpo)
         return;
-    //cuerposBox2D.erase(std::remove(cuerposBox2D.begin(), cuerposBox2D.end(), cuerpo), cuerposBox2D.end());
+    cuerposBox2D.erase(std::remove(cuerposBox2D.begin(), cuerposBox2D.end(), cuerpo), cuerposBox2D.end());
     delete cuerpo;
 }
 

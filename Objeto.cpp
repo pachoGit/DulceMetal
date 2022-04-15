@@ -60,14 +60,10 @@ void Objeto::dibujar()
     if (animacion != nullptr)
     {
         animacion->dibujar();
-        return; // Ya no necesitaria dibujar lo de abajo
+        return; // Ya no necesitaria dibujar lo de abajo (por el momento :D)
     }
     if (sprite != nullptr && visible)
         DrawTexturePro(sprite->textura, sprite->espacio, vespacio, (Vector2) {vespacio.width/2.f, vespacio.height/2.f}, angulo, RAYWHITE);
-}
-
-void Objeto::generarFisicasIniciales()
-{
 }
 
 void Objeto::ingFCuerpo(FisicasCuerpo *_fcuerpo)

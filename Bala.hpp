@@ -22,6 +22,18 @@ class Bala : public Objeto
 
     TipoBala tipo;
 
+  private:
+
+    // Distancia maxima que la bala puede recorrer (en metros)
+    float distanciaMaxima;
+
+    // La posicion anterior de la bala, necesario para ir calculando la distancia
+    // que esta recorriendo la bala
+    Vector2 posicionAnterior;
+
+    // Distancia (en metros) que ha recorrido la bala
+    float distanciaRecorrida;
+
   public:
 
     Bala(Vector2 _posicion, TipoBala tipo);
@@ -33,10 +45,10 @@ class Bala : public Objeto
     void procesarFisicas();
 
     void dibujar();
-
-    void generarFisicasIniciales();
     
     void explotar();
+
+    float retDistanciaRecorrida() const;
 };
 
 

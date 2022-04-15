@@ -22,6 +22,7 @@ void GestorTexturas::cargarTexturas()
     texturas.push_back(new InfoTextura("balas", LoadTexture("../recursos/balas.png")));
     texturas.push_back(new InfoTextura("explosiones", LoadTexture("../recursos/explosiones.png")));
     texturas.push_back(new InfoTextura("obstaculos", LoadTexture("../recursos/obstaculos.png")));
+    texturas.push_back(new InfoTextura("recogibles", LoadTexture("../recursos/recogibles.png")));
 }
 
 Texture2D GestorTexturas::retTextura(std::string nombre) const
