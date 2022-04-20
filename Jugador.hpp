@@ -11,7 +11,7 @@ class Jugador : public Auto
 {
   public:
 
-    Jugador(Vector2 _posicion);
+    Jugador(Vector2 _posicion, TipoAuto _tipo, unsigned _ID);
 
     ~Jugador();
 

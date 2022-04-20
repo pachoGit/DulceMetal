@@ -7,6 +7,7 @@
 #include "GestorSprites.hpp"
 #include "FisicasCuerpo.hpp"
 #include "Animacion.hpp"
+
 class FisicasCuerpo;
 
 enum TipoClaseObjeto
@@ -15,7 +16,9 @@ enum TipoClaseObjeto
     CLASE_AUTO,
     CLASE_BALA,
     CLASE_OBSTACULO,
-    CLASE_JUGADOR
+    CLASE_JUGADOR,
+    CLASE_EQUIPAMIENTO,
+    CLASE_ENEMIGO
 };
 
 class Objeto
@@ -94,6 +97,8 @@ class Objeto
     inline bool esClaseAuto() const { return (tipoClase == CLASE_AUTO); }
     inline bool esClaseJugador() const { return (tipoClase == CLASE_JUGADOR); }
     inline bool esClaseObstaculo() const { return (tipoClase == CLASE_OBSTACULO); }
+    inline bool esClaseEquipamiento() const { return (tipoClase == CLASE_EQUIPAMIENTO); }
+    inline bool esClaseEnemigo() const { return (tipoClase == CLASE_ENEMIGO); }
 
     /**** Funciones extras o de debug ****/
 

@@ -5,9 +5,10 @@
 #include "Util.hpp"
 #include "Convertir.hpp"
 
-Jugador::Jugador(Vector2 _posicion) : Auto(_posicion)
+Jugador::Jugador(Vector2 _posicion, TipoAuto _tipo, unsigned _ID) : Auto(_posicion, _tipo, _ID)
 {
-    sprite = Motor::retMotor().retGestorSprites()->retSprite("autoVerde");
+    auto data = dataAuto.at(_tipo);
+    sprite = Motor::retMotor().retGestorSprites()->retSprite(data.nombre);
     velocidad = {10.f, 10.f};
     tipoClase = CLASE_JUGADOR;
     // Creado al pasar por el constructor de "Auto.cpp"
@@ -17,7 +18,7 @@ Jugador::Jugador(Vector2 _posicion) : Auto(_posicion)
                                                                  FCUERPO_DEFECTO,
                                                                  FMaterial(80.f, 0.0f, 0.0f),
                                                                  FGRUPO_JUGADOR,
-                                                                 (FGrupoColision) (FGRUPO_AUTO | FGRUPO_OBSTACULO));
+                                                                 (FGrupoColision) (FGRUPO_AUTO | FGRUPO_ENEMIGO | FGRUPO_OBSTACULO | FGRUPO_EQUIPAMIENTO));
     nombre = "Jugador";
 
     iniciarBarraVida();
@@ -34,20 +35,26 @@ Jugador::~Jugador()
     // Se borra en "Auto.cpp"
 }
 
-#include <iostream>
-
 void Jugador::actualizar(float dt)
 {
     procesarFisicas();
     sincronizarObjetoConFisicas();
+    actualizarBarraVida();
 
-    if (IsKeyPressed(KEY_SPACE))
+    if (IsKeyPressed(KEY_SPACE) && !inventario->estaVacio())
+    {
+        tipoBala = inventario->retActual()->tipoBala;
         disparar();
+    }
+
+    if (IsKeyPressed(KEY_LEFT_SHIFT))
+    {
+        tipoBala = BALA_BASICA;
+        disparar();
+    }
 
     for (auto &bala : balas)
         bala->actualizar(dt);
-
-    actualizarBarraVida();
 
     if (IsKeyDown(KEY_ENTER))
     {
@@ -56,21 +63,10 @@ void Jugador::actualizar(float dt)
     }
     
     // Manejo del inventario
-    if (IsKeyPressed(KEY_Q))
-        if (!inventario->estaVacio())
-        {
+    if (IsKeyPressed(KEY_Q) && !inventario->estaVacio())
             inventario->retroceder();
-            std::cout << "Retrocediendo..." << std::endl;
-        }
-
-    if (IsKeyPressed(KEY_E))
-        if (!inventario->estaVacio())
-        {
+    if (IsKeyPressed(KEY_E) && !inventario->estaVacio())
             inventario->avanzar();
-            std::cout << "Avanzando..." << std::endl;
-        }
-
-    tipoBala = inventario->retActual()->tipoBala;
 
     eliminarBalasDeMemoria();
 }
@@ -88,7 +84,7 @@ void Jugador::procesarFisicas()
     if (IsKeyDown(KEY_A))
         cuerpo->ApplyAngularImpulse(-2.0f, true);
     if (IsKeyReleased(KEY_A))
-        detenerRotacion();
+        reducirRotacion();
 
     if (IsKeyDown(KEY_W))
     {
@@ -112,21 +108,5 @@ void Jugador::dibujar()
 
 void Jugador::disparar()
 {
-    std::vector<Vector2> vertices = Util::retVerticesRectangulo(espacio, (Vector2) {espacio.width / 2.f, espacio.height / 2.f}, angulo);
-    Vector2 arribaIzquierda = vertices.at(0);
-    Vector2 arribaDerecha = vertices.at(1);
-
-    Bala *b1 = new Bala(Util::retPuntoCentral(arribaIzquierda, arribaDerecha), tipoBala);
-    b1->ingAngulo(angulo);
-
-    balas.push_back(b1);
-
-    /*
-    Bala *b1 = new Bala((Vector2){arribaIzquierda.x, arribaIzquierda.y}, tbala);
-    b1->ingAngulo(angulo);
-    Bala *b2 = new Bala((Vector2){arribaDerecha.x, arribaDerecha.y}, tbala);
-    b2->ingAngulo(angulo);
-    balas.push_back(b1);
-    balas.push_back(b2);
-    */
+    Auto::disparar();
 }

@@ -9,12 +9,13 @@
 #include "Auto.hpp"
 #include "Jugador.hpp"
 #include "Obstaculo.hpp"
-
 #include "Convertir.hpp"
 #include "Config.hpp"
 #include "Animacion.hpp"
-
+#include "Equipamiento.hpp"
 #include "Mapa.hpp"
+
+#include "Enemigo.hpp"
 
 #include <iostream>
 
@@ -31,14 +32,20 @@ int main()
     motor.retGestorSprites()->generarSprites();
     motor.retGestorSprites()->generarSpritesAnimados();
 
-    Auto *a1 = new Auto((Vector2) {2.f, 5.f});
+    unsigned contador = 0;
 
-    Jugador *a2 = new Jugador((Vector2) {5.f, 10.f});
+    Auto *a1 = new Auto((Vector2) {2.f, 5.f}, AUTO_NARANJA, contador++);
+
+    Jugador *a2 = new Jugador((Vector2) {5.f, 10.f}, AUTO_VERDE, contador++);
     Obstaculo *m1 = new Obstaculo((Vector2) {15.f, 12.f}, OBSTACULO_ARBOL);
-    Animacion *b1 = new Animacion((Vector2) {20.f, 12.f}, ANIM_VIDA);
+    Animacion *b1 = new Animacion((Vector2) {20.f, 12.f}, ANIM_ARMA_VIDA);
     b1->enBucle = true;
 
+    Equipamiento *eq = new Equipamiento((Vector2) {25.f, 12.f}, EQUIP_RAYO);
+
     Mapa *mapa = new Mapa();
+
+    Enemigo *enemigo = new Enemigo((Vector2) {2.f, 10.f}, AUTO_AZUL, contador++);
 
     while (!WindowShouldClose())
     {
@@ -65,17 +72,23 @@ int main()
         a2->actualizar(dt);
         m1->actualizar(dt);
         b1->actualizar(dt);
-
         mapa->actualizar(dt);
+        eq->actualizar(dt);
 
+        enemigo->actualizar(dt);
+
+        
         if (a1 != nullptr)
             a1->dibujar();
 
         a2->dibujar();
         m1->dibujar();
         b1->dibujar();
-
         mapa->dibujar();
+        eq->dibujar();
+
+        enemigo->dibujar();
+
 
         motor.retGestorFisicas()->limpiarFuerzas();
 
@@ -89,6 +102,8 @@ int main()
     delete m1;
     delete b1;
     delete mapa;
+    delete eq;
+    delete enemigo;
 
     motor.destruirModulos();
 

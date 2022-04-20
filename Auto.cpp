@@ -6,25 +6,26 @@
 #include "Convertir.hpp"
 
 #include <algorithm>
-#include <iostream>
 
-Auto::Auto(Vector2 _posicion) : Objeto(_posicion)
+Auto::Auto(Vector2 _posicion, TipoAuto _tipo, unsigned _ID) : Objeto(_posicion)
 {
+    tipoAuto = _tipo;
+    ID = _ID;
+    auto data = dataAuto.at(tipoAuto);
     espacio.width = Config::DIM_AUTO.x;
     espacio.height = Config::DIM_AUTO.y;
-    sprite = Motor::retMotor().retGestorSprites()->retSprite("autoAzul");
+    sprite = Motor::retMotor().retGestorSprites()->retSprite(data.nombre);
     velocidad = {3.0f, 3.0f};
     tipoClase = CLASE_AUTO;
     fcuerpo = Motor::retMotor().retGestorFisicas()->crearFCuerpo(this,
                                                                  FCUERPO_DEFECTO,
                                                                  FMaterial(80.f, 0.0f, 0.0f),
                                                                  FGRUPO_AUTO,
-                                                                 (FGrupoColision) (FGRUPO_AUTO | FGRUPO_JUGADOR | FGRUPO_OBSTACULO | FGRUPO_BALA));
+                                                                 (FGrupoColision) (FGRUPO_AUTO | FGRUPO_JUGADOR | FGRUPO_OBSTACULO /* | FGRUPO_BALA*/ | FGRUPO_EQUIPAMIENTO));
     vida = Config::MAX_VIDA;
     nombre = "Auto";
     inventario = new Inventario();
-    tipoBala = BALA_BASICA;
-    
+    tipoBala = BALA_FUEGO;
     iniciarBarraVida();
 }
 
@@ -58,6 +59,8 @@ void Auto::actualizar(float dt)
     }
     procesarFisicas();
     sincronizarObjetoConFisicas();
+    for (auto &bala : balas)
+        bala->actualizar(dt);
     actualizarBarraVida();
     eliminarBalasDeMemoria();
 }
@@ -95,7 +98,7 @@ b2Vec2 Auto::retVelocidadDelantera()
     return b2Dot(normal, cuerpo->GetLinearVelocity()) * normal;
 }
 
-void Auto::detenerRotacion()
+void Auto::reducirRotacion()
 {
     b2Body *cuerpo = fcuerpo->retCuerpoBox2D();
     if (cuerpo == nullptr)
@@ -123,7 +126,7 @@ void Auto::actualizarFriccion()
     cuerpo->ApplyLinearImpulse(impulso, cuerpo->GetWorldCenter(), true);
 
     // Reducir la rotacion
-    detenerRotacion();
+    reducirRotacion();
     
     // Reducir la velocidad delantera
     b2Vec2 vdelantera = retVelocidadDelantera();
@@ -153,10 +156,23 @@ void Auto::disparar()
     std::vector<Vector2> vertices = Util::retVerticesRectangulo(espacio, (Vector2) {espacio.width / 2.f, espacio.height / 2.f}, angulo);
     Vector2 arribaIzquierda = vertices.at(0);
     Vector2 arribaDerecha = vertices.at(1);
-    Vector2 p = {arribaIzquierda.x, arribaIzquierda.y};
-    Bala *nueva = new Bala(p, BALA_AURA);
-    nueva->ingAngulo(angulo);
-    balas.push_back(nueva);
+
+    if (tipoBala != BALA_BASICA)
+    {
+
+        Bala *b1 = new Bala(Util::retPuntoCentral(arribaIzquierda, arribaDerecha), tipoBala /* inventario->retActual()->tipoBala*/, ID);
+        b1->ingAngulo(angulo);
+        balas.push_back(b1);
+    }
+    else
+    {
+        Bala *b1 = new Bala((Vector2){arribaIzquierda.x, arribaIzquierda.y}, tipoBala, ID);
+        b1->ingAngulo(angulo);
+        Bala *b2 = new Bala((Vector2){arribaDerecha.x, arribaDerecha.y}, tipoBala, ID);
+        b2->ingAngulo(angulo);
+        balas.push_back(b1);
+        balas.push_back(b2);
+    }
 }
 
 void Auto::explotar()
@@ -168,20 +184,17 @@ void Auto::explotar()
         delete animacion;
         animacion = nullptr;
     }
-    animacion = new Animacion(posicion, ANIM_EXPLOSION_NARANJA);
+    animacion = new Animacion(posicion, dataAuto.at(tipoAuto).texplosion);
     marcadoParaBorrar = true;
 }
 
 void Auto::eliminarBalasDeMemoria()
 {
     balas.erase(std::remove_if(balas.begin(), balas.end(), [] (Bala *bala) {
-                if (bala->marcadoParaBorrar == true)
+                if (bala->marcadoParaBorrar && !bala->animacion->estaCorriendo)
                 {
-                    if (bala->animacion->estaCorriendo == false)
-                    {
-                        delete bala;
-                        return true;
-                    }
+                    delete bala;
+                    return true;
                 }
                 return false;
             }), balas.end());

@@ -5,6 +5,8 @@
 #include "Bala.hpp"
 #include "Jugador.hpp"
 #include "Auto.hpp"
+#include "Equipamiento.hpp"
+#include "Enemigo.hpp"
 
 inline Jugador* ObjetoEnJugador(Objeto *objeto)
 {
@@ -30,6 +32,22 @@ inline Auto *ObjetoEnAuto(Objeto *objeto)
     return a;
 }
 
+inline Equipamiento *ObjetoEnEquipamiento(Objeto *objeto)
+{
+    Equipamiento *e = nullptr;
+    if (objeto && objeto->esClaseEquipamiento())
+        e = static_cast<Equipamiento *>(objeto);
+    return e;
+}
+
+inline Enemigo *ObjetoEnEnemigo(Objeto *objeto)
+{
+    Enemigo *e = nullptr;
+    if (objeto && objeto->esClaseEnemigo())
+        e = static_cast<Enemigo *>(objeto);
+    return e;
+}
+
 inline Objeto *retObjetoDeFixture(b2Fixture *faccesorio)
 {
     Objeto *objeto = nullptr;
@@ -38,5 +56,6 @@ inline Objeto *retObjetoDeFixture(b2Fixture *faccesorio)
     FisicasCuerpo *fcuerpo = (FisicasCuerpo *) faccesorio->GetBody()->GetUserData().pointer;
     return fcuerpo->objeto;
 }
+
 
 #endif /* OBJETOAYUDAS_HPP */

@@ -22,11 +22,12 @@ enum FCuerpoBanderas
  */
 enum FGrupoColision
 {
-    FGRUPO_JUGADOR =   BIT(0),
-    FGRUPO_BALA =      BIT(1),
-    FGRUPO_OBSTACULO = BIT(2),
-    FGRUPO_AUTO =      BIT(3),
-    FGRUPO_ARMA =      BIT(4),
+    FGRUPO_JUGADOR =      BIT(0),
+    FGRUPO_BALA =         BIT(1),
+    FGRUPO_OBSTACULO =    BIT(2),
+    FGRUPO_AUTO =         BIT(3),
+    FGRUPO_EQUIPAMIENTO = BIT(4),
+    FGRUPO_ENEMIGO =      BIT(5),
 
     FGRUPO_TODO = 0xFFFF
 };

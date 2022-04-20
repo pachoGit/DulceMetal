@@ -58,7 +58,7 @@ class Config
     static Vector2 DIM_BARRAVIDA;
 
     // Dimensiones de las armas (recogibles) en metros
-    static Vector2 DIM_ARMA;
+    static Vector2 DIM_EQUIPAMIENTO;
 };
 
 

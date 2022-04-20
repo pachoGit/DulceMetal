@@ -3,7 +3,6 @@
 
 #include <raylib.h>
 #include <map>
-#include <utility>
 #include <vector>
 
 #include "GestorSprites.hpp"
@@ -11,10 +10,12 @@
 
 enum TipoAnimacion
 {
-    ANIM_EXPLOSION_BLANCA,
-    ANIM_EXPLOSION_GRIS,
+    ANIM_EXPLOSION_AZUL,
+    ANIM_EXPLOSION_VERDE,
     ANIM_EXPLOSION_AMARILLO,
     ANIM_EXPLOSION_NARANJA,
+    ANIM_EXPLOSION_NEGRA,
+
     ANIM_EXPLOSION_BALA_VERDE,
     ANIM_EXPLOSION_BALA_AMARILLA,
     ANIM_EXPLOSION_BALA_ROJA,
@@ -25,7 +26,7 @@ enum TipoAnimacion
     ANIM_ARMA_AURA,
     ANIM_ARMA_FLOREAL,
     ANIM_ARMA_FURIA,
-    ANIM_VIDA
+    ANIM_ARMA_VIDA
 };
 
 struct InfoAnimacion
@@ -36,24 +37,24 @@ struct InfoAnimacion
 };
 
 static std::map<TipoAnimacion, InfoAnimacion> dataAnimacion = {
-    {ANIM_EXPLOSION_BLANCA,   {"explosionBlanca",   Config::DIM_EXPLOSION_AUTO, 10}},
-    {ANIM_EXPLOSION_GRIS,     {"explosionGris",     Config::DIM_EXPLOSION_AUTO, 10}},
-    {ANIM_EXPLOSION_AMARILLO, {"explosionAmarillo", Config::DIM_EXPLOSION_AUTO, 10}},
-    {ANIM_EXPLOSION_NARANJA,  {"explosionNaranja",  Config::DIM_EXPLOSION_AUTO, 10}},
+    {ANIM_EXPLOSION_AZUL,      {"explosionAzul",     Config::DIM_EXPLOSION_AUTO, 10}},
+    {ANIM_EXPLOSION_VERDE,     {"explosionVerde",    Config::DIM_EXPLOSION_AUTO, 10}},
+    {ANIM_EXPLOSION_AMARILLO,  {"explosionAmarillo", Config::DIM_EXPLOSION_AUTO, 10}},
+    {ANIM_EXPLOSION_NARANJA,   {"explosionNaranja",  Config::DIM_EXPLOSION_AUTO, 10}},
+    {ANIM_EXPLOSION_NEGRA,     {"explosionNegra",    Config::DIM_EXPLOSION_AUTO, 10}},
 
     {ANIM_EXPLOSION_BALA_VERDE,    {"explosionBalaVerde",    Config::DIM_EXPLOSION_BALA, 10}},
     {ANIM_EXPLOSION_BALA_AMARILLA, {"explosionBalaAmarilla", Config::DIM_EXPLOSION_BALA, 10}},
     {ANIM_EXPLOSION_BALA_ROJA,     {"explosionBalaRoja",     Config::DIM_EXPLOSION_BALA, 10}},
     {ANIM_EXPLOSION_BALA_AZUL,     {"explosionBalaAzul",     Config::DIM_EXPLOSION_BALA, 10}},
             
-    {ANIM_ARMA_RAYO,     {"armaRayo",     Config::DIM_ARMA, 10}},
-    {ANIM_ARMA_FUEGO,    {"armaFuego",    Config::DIM_ARMA, 10}},
-    {ANIM_ARMA_AURA,     {"armaAura",     Config::DIM_ARMA, 10}},
-    {ANIM_ARMA_FLOREAL,  {"armaFloreal",  Config::DIM_ARMA, 10}},
-    {ANIM_ARMA_FURIA,    {"armaFuria",    Config::DIM_ARMA, 10}},
-    {ANIM_VIDA,          {"vida",         Config::DIM_ARMA, 10}}
+    {ANIM_ARMA_RAYO,     {"armaRayo",     Config::DIM_EQUIPAMIENTO, 10}},
+    {ANIM_ARMA_FUEGO,    {"armaFuego",    Config::DIM_EQUIPAMIENTO, 10}},
+    {ANIM_ARMA_AURA,     {"armaAura",     Config::DIM_EQUIPAMIENTO, 10}},
+    {ANIM_ARMA_FLOREAL,  {"armaFloreal",  Config::DIM_EQUIPAMIENTO, 10}},
+    {ANIM_ARMA_FURIA,    {"armaFuria",    Config::DIM_EQUIPAMIENTO, 10}},
+    {ANIM_ARMA_VIDA,     {"vida",         Config::DIM_EQUIPAMIENTO, 8}}
 };
-
 
 class Animacion
 {

@@ -1,66 +1,26 @@
 #include "Bala.hpp"
 #include "Motor.hpp"
 #include "Util.hpp"
-#include "Config.hpp"
 #include "Convertir.hpp"
-#include "Animacion.hpp"
 
-Bala::Bala(Vector2 _posicion, TipoBala _tipo) : Objeto(_posicion)
+Bala::Bala(Vector2 _posicion, TipoBala _tipo, unsigned _autor) : Objeto(_posicion)
 { 
-    if (_tipo == BALA_BASICA)
-    {
-        espacio.width = Config::DIM_BALA_BASICA.x;
-        espacio.height = Config::DIM_BALA_BASICA.y;
-    }
-    else
-    {
-        espacio.width = Config::DIM_BALA_NORMAL.x;
-        espacio.height = Config::DIM_BALA_NORMAL.y;
-    }
     tipo = _tipo;
-    std::string nombre;
-    switch (tipo)
-    {
-        case BALA_BASICA:
-            nombre = "balaBasica";
-            efecto = 1;
-            distanciaMaxima = 50;
-            break;
-        case BALA_FUEGO:
-            nombre = "balaFuego";
-            efecto = 4;
-            distanciaMaxima = 5;
-            break;
-        case BALA_ELECTRICO:
-            nombre = "balaElectrico";
-            efecto = 2;
-            distanciaMaxima = 10;
-            break;
-        case BALA_AURA:
-            nombre = "balaAura";
-            efecto = 3;
-            distanciaMaxima = 13; // Este es el desvalanceado :D
-            break;
-        case BALA_FURIA:
-            nombre = "balaFuria";
-            efecto = 2;
-            distanciaMaxima = 10;
-            break;
-        case BALA_FLOREAL:
-            nombre = "balaFloreal";
-            efecto = 2;
-            distanciaMaxima = 10;
-            break;
-    }
-    sprite = Motor::retMotor().retGestorSprites()->retSprite(nombre);
-    velocidad = {8.0f, 8.0f};
+    autor = _autor;
+    auto data = dataBala.at(tipo);
+    espacio.width = data.dimension.x;
+    espacio.height = data.dimension.y;
+    efecto = data.efecto;
+    distanciaMaxima = data.distanciaMaxima;
+    sprite = Motor::retMotor().retGestorSprites()->retSprite(data.nombre);
+    velocidad = data.velocidad;
     angulo = 0.f; // Para que este a la misma direccion de la textura del auto :D
     tipoClase = CLASE_BALA;
     fcuerpo = Motor::retMotor().retGestorFisicas()->crearFCuerpo(this,
                                                                  (FCuerpoBanderas) (FCUERPO_DEFECTO | FCUERPO_PROYECTIL),
                                                                  FMaterial(1.f, 1.f, 0.1f), 
                                                                  FGRUPO_BALA,
-                                                                 (FGrupoColision) (FGRUPO_AUTO | FGRUPO_OBSTACULO));
+                                                                 (FGrupoColision) (FGRUPO_AUTO  /* | FGRUPO_ENEMIGO | FGRUPO_JUGADOR */| FGRUPO_OBSTACULO));
     nombre = "Bala";
     posicionAnterior = _posicion;
     distanciaRecorrida = 0.0f;
@@ -121,29 +81,7 @@ void Bala::explotar()
         delete animacion;
         animacion = nullptr;
     }
-    TipoAnimacion tanimacion;
-    switch (tipo)
-    {
-        case BALA_BASICA:
-            tanimacion = ANIM_EXPLOSION_BALA_AMARILLA;
-            break;
-        case BALA_FUEGO:
-            tanimacion = ANIM_EXPLOSION_BALA_AMARILLA;
-            break;
-        case BALA_ELECTRICO:
-            tanimacion = ANIM_EXPLOSION_BALA_AMARILLA;
-            break;
-        case BALA_AURA:
-            tanimacion = ANIM_EXPLOSION_BALA_AZUL;
-            break;
-        case BALA_FURIA:
-            tanimacion = ANIM_EXPLOSION_BALA_ROJA;
-            break;
-        case BALA_FLOREAL:
-            tanimacion = ANIM_EXPLOSION_BALA_VERDE;
-            break;
-    }
-    animacion = new Animacion(posicion, tanimacion);
+    animacion = new Animacion(posicion, dataBala.at(tipo).texplosion);
     marcadoParaBorrar = true;
 }
 
