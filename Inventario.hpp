@@ -56,6 +56,9 @@ class Inventario
 
     // Retorna true si el inventario esta vacio :D
     bool estaVacio() const;
+
+    // Disminuir balas o remover una bala si la cantidad llega a 0
+    void disminuir(TipoBala tipo, int cantidad);
 };
 
 #endif /* INVENTARIO_HPP */

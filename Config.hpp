@@ -59,6 +59,9 @@ class Config
 
     // Dimensiones de las armas (recogibles) en metros
     static Vector2 DIM_EQUIPAMIENTO;
+
+    // Dimensiones del rango de vicion del enemigo
+    static float RANGO_VISION_ENEMIGO;
 };
 
 

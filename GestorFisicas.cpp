@@ -7,6 +7,14 @@
 #include <algorithm>
 #include <iostream>
 
+// Comprueba si un accesorio pertenece al grupo de colision consultado
+inline bool CheckGrupoColision(const b2Fixture *accesorio, FGrupoColision colision)
+{
+    const b2Filter &filtro = accesorio->GetFilterData();
+    return (filtro.categoryBits & colision) > 0;
+}
+
+
 GestorFisicas::GestorFisicas()
 {
     gravedad.Set(0.f, 0.f);
@@ -100,44 +108,125 @@ void GestorFisicas::BeginContact(b2Contact *contacto)
 
 void GestorFisicas::EndContact(b2Contact *contacto)
 {
+    // Nada por el momento
 }
+
+#include <iostream>
 
 void GestorFisicas::PreSolve(b2Contact *contacto, const b2Manifold *colector)
 {
+    b2Fixture *accesorioA = contacto->GetFixtureA();
+    b2Fixture *accesorioB = contacto->GetFixtureB();
+
     Objeto *o1 = retObjetoDeFixture(contacto->GetFixtureA());
     Objeto *o2 = retObjetoDeFixture(contacto->GetFixtureB());
 
     if (o1 == nullptr || o2 == nullptr)
         return;
     
-    // Verificar que solo una vez debe llegar aqui :D
-    if (o1->esClaseBala() && (o2->esClaseJugador() || o2->esClaseAuto()))
+    bool habilitarColision = false;
+    
+    if (CheckGrupoColision(accesorioA, FGRUPO_OBSTACULO))
     {
-        // Generar el danio
-        Auto *vehiculo = ObjetoEnAuto(o2);
-        Bala *bala = ObjetoEnBala(o1);
-        if (bala->marcadoParaBorrar == false)
-        {
-            int efecto = bala->efecto;
-            vehiculo->vida -= efecto;
-            bala->explotar();
-        }
+        // Colision de un objeto con algun obstaculo (mapa o muro)
+        habilitarColision = DeberiaColisionar_ObstaculoConObjeto(contacto, accesorioA, accesorioB);
     }
-    if (o2->esClaseBala() && (o1->esClaseJugador() || o1->esClaseAuto()))
+
+    else if (CheckGrupoColision(accesorioB, FGRUPO_OBSTACULO))
     {
-        // Generar el danio
-        Auto *vehiculo = ObjetoEnAuto(o1);
-        Bala *bala = ObjetoEnBala(o2);
-        if (bala->marcadoParaBorrar == false)
-        {
-            int efecto = bala->efecto;
-            vehiculo->vida -= efecto;
-            bala->explotar();
-        }
+        // Colision de un objeto con algun obstaculo (mapa o muro)
+        habilitarColision = DeberiaColisionar_ObstaculoConObjeto(contacto, accesorioB, accesorioA);
     }
+    else
+    {
+        habilitarColision = DeberiaColisionar_ObjetoConObjeto(contacto, accesorioA, accesorioB);
+    }
+
+    contacto->SetEnabled(habilitarColision);
 }
 
 void GestorFisicas::PostSolve(b2Contact *contacto, const b2ContactImpulse *impulso)
 {
+    // Nada por el momento
+}
+
+bool GestorFisicas::DeberiaColisionar_ObstaculoConObjeto(b2Contact *contacto, b2Fixture *obstaculoAccesorio, b2Fixture *objetoAccesorio)
+{
+    Objeto *objeto = retObjetoDeFixture(objetoAccesorio);
+    if (!objeto)
+        return false;
+    if (objeto->esClaseBala())
+    {
+        Bala *bala = ObjetoEnBala(objeto);
+        bala->explotar(); // Colisiono un obstaculo con una bala...entonces explotamos
+        return false;
+    }
+    return true;
+}
+
+bool GestorFisicas::DeberiaColisionar_ObjetoConObjeto(b2Contact *contacto, b2Fixture *objetoAccesorioA, b2Fixture *objetoAccesorioB)
+{
+    // Colision entre autos, si debe suceder
+    if (CheckGrupoColision(objetoAccesorioA, (FGrupoColision) (FGRUPO_AUTO | FGRUPO_ENEMIGO | FGRUPO_JUGADOR)) &&
+        CheckGrupoColision(objetoAccesorioB, (FGrupoColision) (FGRUPO_AUTO | FGRUPO_ENEMIGO | FGRUPO_JUGADOR)))
+        return true;
+
+    Objeto *objetoA = retObjetoDeFixture(objetoAccesorioA);
+    Objeto *objetoB = retObjetoDeFixture(objetoAccesorioB);
     
+    if (!objetoA || !objetoB)
+        return false;
+
+    // Resto de colision
+    // Bala con Auto
+    if (objetoA->esClaseBala() && !objetoB->esClaseEquipamiento())
+        ResolverColision_AutoConBala(objetoB, objetoA);
+    if (objetoB->esClaseBala() && !objetoA->esClaseEquipamiento())
+        ResolverColision_AutoConBala(objetoA, objetoB);
+
+    // Equipamiento con Auto
+    if (objetoA->esClaseEquipamiento() && (objetoB->esClaseAuto() || objetoB->esClaseEnemigo() || objetoB->esClaseJugador()))
+        ResolverColision_AutoConEquipamiento(objetoB, objetoA);
+    if (objetoB->esClaseEquipamiento() && (objetoA->esClaseAuto() || objetoA->esClaseEnemigo() || objetoA->esClaseJugador()))
+        ResolverColision_AutoConEquipamiento(objetoA, objetoB);
+
+    return false; // Ante cualquier otra colision (bala - equipamiento, auto - equipamiento)
+}
+
+void GestorFisicas::ResolverColision_AutoConBala(Objeto *ovehiculo, Objeto *obala)
+{
+    Bala *bala = ObjetoEnBala(obala);
+    // La verdad es que no se por que no funciona solo convirtiendo a "Auto"
+    Auto *vehiculo = (ovehiculo->esClaseJugador() ? ObjetoEnJugador(ovehiculo) : ObjetoEnAuto(ovehiculo));
+
+    // TODO: Si alguno de los 2 es null entonces hay acciones que se dejaron por alto
+    // Talvez imprimir un mensaje a aqui. Pero hasta este momento ninguno los dos deberia
+    // ser null, lo unico es que el cuando convertir un "Objeto" a "Auto", entonces daba null
+    // por que la clase era "Jugador". Extranio la verdad :D
+    if (!bala || !vehiculo)
+        return;
+    if (bala->autor == vehiculo->ID) // El mismo auto que disparo, normalmente solo sucede cuando comienza el disparo
+        return;
+    if (!bala->marcadoParaBorrar)
+    {
+        vehiculo->vida -= bala->efecto;
+        bala->explotar();
+    }
+}
+
+void GestorFisicas::ResolverColision_AutoConEquipamiento(Objeto *ovehiculo, Objeto * oequipamiento)
+{
+    Equipamiento *equipamiento = ObjetoEnEquipamiento(oequipamiento);
+    Auto *vehiculo = (ovehiculo->esClaseJugador() ? ObjetoEnJugador(ovehiculo) : ObjetoEnAuto(ovehiculo));
+    if (!equipamiento || !vehiculo)
+        return;
+
+    if (!equipamiento->marcadoParaBorrar)
+    {
+        if (equipamiento->tipo == EQUIP_VIDA)
+            vehiculo->vida += equipamiento->ganancia;
+        else
+            vehiculo->inventario->ingresar(equipamiento->tipoBala, equipamiento->ganancia);
+        equipamiento->desaparecer(); // Desaparecer
+    }
 }

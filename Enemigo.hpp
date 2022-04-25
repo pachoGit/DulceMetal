@@ -5,6 +5,11 @@
 
 class Enemigo : public Auto
 {
+  private:
+    
+    // Rango de vicion del auto
+    Rectangle rango;
+
   public:
 
     // Ultima vez desde que disparo
@@ -17,6 +22,8 @@ class Enemigo : public Auto
     ~Enemigo();
 
     void actualizar(float dt) override;
+
+    void dibujar() override;
 };
 
 

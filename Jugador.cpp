@@ -18,16 +18,8 @@ Jugador::Jugador(Vector2 _posicion, TipoAuto _tipo, unsigned _ID) : Auto(_posici
                                                                  FCUERPO_DEFECTO,
                                                                  FMaterial(80.f, 0.0f, 0.0f),
                                                                  FGRUPO_JUGADOR,
-                                                                 (FGrupoColision) (FGRUPO_AUTO | FGRUPO_ENEMIGO | FGRUPO_OBSTACULO | FGRUPO_EQUIPAMIENTO));
+                                                                 (FGrupoColision) (FGRUPO_AUTO | FGRUPO_ENEMIGO | FGRUPO_OBSTACULO | FGRUPO_BALA | FGRUPO_EQUIPAMIENTO));
     nombre = "Jugador";
-
-    iniciarBarraVida();
-    if (inventario)
-    {
-        inventario->ingresar(BALA_AURA, 5);
-        inventario->ingresar(BALA_FUEGO, 5);
-        inventario->ingresar(BALA_FLOREAL, 5);
-    }
 }
 
 Jugador::~Jugador()
@@ -104,6 +96,12 @@ void Jugador::procesarFisicas()
 void Jugador::dibujar()
 {
     Auto::dibujar();
+    if (!inventario->estaVacio())
+    {
+        std::string nbalas = std::to_string(inventario->retActual()->cantidad);
+        Vector2 ptexto = Convertir::MetrosEnPixeles((Vector2) {30.f, 15.f});
+        DrawText(nbalas.c_str(), ptexto.x, ptexto.y, 2, RED);
+    }
 }
 
 void Jugador::disparar()

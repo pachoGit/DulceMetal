@@ -20,7 +20,7 @@ Bala::Bala(Vector2 _posicion, TipoBala _tipo, unsigned _autor) : Objeto(_posicio
                                                                  (FCuerpoBanderas) (FCUERPO_DEFECTO | FCUERPO_PROYECTIL),
                                                                  FMaterial(1.f, 1.f, 0.1f), 
                                                                  FGRUPO_BALA,
-                                                                 (FGrupoColision) (FGRUPO_AUTO  /* | FGRUPO_ENEMIGO | FGRUPO_JUGADOR */| FGRUPO_OBSTACULO));
+                                                                 (FGrupoColision) (FGRUPO_AUTO | FGRUPO_ENEMIGO | FGRUPO_JUGADOR | FGRUPO_OBSTACULO));
     nombre = "Bala";
     posicionAnterior = _posicion;
     distanciaRecorrida = 0.0f;

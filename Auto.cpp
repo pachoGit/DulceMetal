@@ -21,7 +21,7 @@ Auto::Auto(Vector2 _posicion, TipoAuto _tipo, unsigned _ID) : Objeto(_posicion)
                                                                  FCUERPO_DEFECTO,
                                                                  FMaterial(80.f, 0.0f, 0.0f),
                                                                  FGRUPO_AUTO,
-                                                                 (FGrupoColision) (FGRUPO_AUTO | FGRUPO_JUGADOR | FGRUPO_OBSTACULO /* | FGRUPO_BALA*/ | FGRUPO_EQUIPAMIENTO));
+                                                                 (FGrupoColision) (FGRUPO_AUTO | FGRUPO_JUGADOR | FGRUPO_OBSTACULO | FGRUPO_BALA | FGRUPO_EQUIPAMIENTO));
     vida = Config::MAX_VIDA;
     nombre = "Auto";
     inventario = new Inventario();
@@ -160,9 +160,10 @@ void Auto::disparar()
     if (tipoBala != BALA_BASICA)
     {
 
-        Bala *b1 = new Bala(Util::retPuntoCentral(arribaIzquierda, arribaDerecha), tipoBala /* inventario->retActual()->tipoBala*/, ID);
+        Bala *b1 = new Bala(Util::retPuntoCentral(arribaIzquierda, arribaDerecha), tipoBala, ID);
         b1->ingAngulo(angulo);
         balas.push_back(b1);
+        inventario->disminuir(tipoBala, 1); // Quitar la bala lanzada del inventario
     }
     else
     {

@@ -77,3 +77,19 @@ bool Inventario::estaVacio() const
 {
     return (armas.size() == 0);
 }
+
+void Inventario::disminuir(TipoBala tipo, int cantidad)
+{
+    for (auto &arma : armas)
+    {
+        if (arma->tipoBala == tipo)
+        {
+            arma->cantidad -= cantidad;
+            if (arma->cantidad <= 0)
+            {
+                remover(arma);
+                break;
+            }
+        }
+    }
+}

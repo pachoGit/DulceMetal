@@ -36,3 +36,5 @@ int Config::MAX_VIDA = 100;
 Vector2 Config::DIM_BARRAVIDA = {30.f, 5.f};
 
 Vector2 Config::DIM_EQUIPAMIENTO = {0.7f, 0.7f};
+
+float Config::RANGO_VISION_ENEMIGO = 5.f;

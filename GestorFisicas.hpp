@@ -51,7 +51,18 @@ class GestorFisicas : public b2ContactListener
     void PreSolve(b2Contact *contacto, const b2Manifold *oldManifold) override;
     
     void PostSolve(b2Contact *contacto, const b2ContactImpulse *impulso) override;
+
+  private:
+
+    bool DeberiaColisionar_ObstaculoConObjeto(b2Contact *contacto, b2Fixture *obstaculoAccesorio, b2Fixture *objetoAccesorio);
+
+    bool DeberiaColisionar_ObjetoConObjeto(b2Contact *contacto, b2Fixture *objetoAccesorioA, b2Fixture *objetoAccesorioB);
+
+    void ResolverColision_AutoConBala(Objeto *ovehiculo, Objeto *obala);
+
+    void ResolverColision_AutoConEquipamiento(Objeto *ovehiculo, Objeto *oequipamiento);
 };
+
 
 
 #endif /* GESTORFISICAS_HPP */
