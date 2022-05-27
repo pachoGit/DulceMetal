@@ -22,15 +22,16 @@ struct InfoEquipamiento
     TipoAnimacion tanimacion; // Tipo de animacion del objeto
     TipoBala tipoBala;
     int ganancia; // En el caso de las armas, la cantidad de balas. En el caso de la vida, la cantidad de vida :D
+    int tiempoNoVisible; // Tiempo en el que no se puede recoger (en segundos)
 };
 
 static std::map<TipoEquipamiento, InfoEquipamiento> dataEquipamiento = {
-    {EQUIP_RAYO,    {ANIM_ARMA_RAYO, BALA_ELECTRICO, 5 /* balas */}},
-    {EQUIP_FUEGO,   {ANIM_ARMA_RAYO, BALA_FUEGO, 2 /* balas */}},
-    {EQUIP_AURA,    {ANIM_ARMA_RAYO, BALA_AURA, 4 /* balas */}},
-    {EQUIP_FLOREAL, {ANIM_ARMA_RAYO, BALA_FLOREAL, 4 /* balas */}},
-    {EQUIP_FURIA,   {ANIM_ARMA_RAYO, BALA_FURIA, 3 /* balas */}},
-    {EQUIP_VIDA,    {ANIM_ARMA_RAYO, BALA_BASICA /* Esto no se usara*/, 35 /* de vida */}},
+    {EQUIP_RAYO,    {ANIM_ARMA_RAYO, BALA_ELECTRICO, 5 /* balas */, 4}},
+    {EQUIP_FUEGO,   {ANIM_ARMA_FUEGO, BALA_FUEGO, 2 /* balas */, 8}},
+    {EQUIP_AURA,    {ANIM_ARMA_AURA, BALA_AURA, 4 /* balas */, 6}},
+    {EQUIP_FLOREAL, {ANIM_ARMA_FLOREAL, BALA_FLOREAL, 4 /* balas */, 4}},
+    {EQUIP_FURIA,   {ANIM_ARMA_FURIA, BALA_FURIA, 3 /* balas */, 3}},
+    {EQUIP_VIDA,    {ANIM_ARMA_VIDA, BALA_BASICA /* Esto no se usara*/, 35 /* de vida */, 7}},
 };
 
 // Armas y vida que se encuentran esparcidos por el mapa :D
@@ -46,11 +47,14 @@ class Equipamiento : public Objeto
 
     TipoBala tipoBala;
 
+    // Controlar el tiempo
+    int tiempoAnterior;
+
+  public:
+
     Equipamiento(Vector2 _posicion, TipoEquipamiento _tipo);
 
     ~Equipamiento();
-
-  public:
 
     void actualizar(float dt);
 

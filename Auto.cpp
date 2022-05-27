@@ -106,6 +106,15 @@ void Auto::reducirRotacion()
     cuerpo->ApplyAngularImpulse(0.1f * cuerpo->GetInertia() * -cuerpo->GetAngularVelocity(), true);
 }
 
+void Auto::detenerRotacion()
+{
+    b2Body *cuerpo = fcuerpo->retCuerpoBox2D();
+    if (cuerpo == nullptr)
+        return;
+    cuerpo->ApplyAngularImpulse(cuerpo->GetInertia() * -cuerpo->GetAngularVelocity(), true);
+}
+
+
 void Auto::detenerAuto()
 {
     b2Body *cuerpo = fcuerpo->retCuerpoBox2D();
@@ -189,6 +198,43 @@ void Auto::explotar()
     marcadoParaBorrar = true;
 }
 
+
+void Auto::impulsarHaciaAdelante()
+{
+    if (fcuerpo == nullptr)
+        return;
+    b2Body *cuerpo = fcuerpo->retCuerpoBox2D();
+    float longitud = espacio.height;
+    b2Vec2 impulso(longitud * std::sin(cuerpo->GetAngle()), longitud * std::cos(cuerpo->GetAngle()) * -1);
+    cuerpo->ApplyLinearImpulse(10.0f * impulso, cuerpo->GetWorldCenter(), true);
+}
+
+void Auto::impulsarHaciaAtras()
+{
+    if (fcuerpo == nullptr)
+        return;
+    b2Body *cuerpo = fcuerpo->retCuerpoBox2D();
+    float longitud = espacio.height;
+    b2Vec2 impulso(longitud * std::sin(cuerpo->GetAngle()), longitud * std::cos(cuerpo->GetAngle()) * -1);
+    cuerpo->ApplyLinearImpulse(-(10.0f * impulso), cuerpo->GetWorldCenter(), true);
+}
+
+void Auto::girarHaciaDerecha()
+{
+    if (fcuerpo == nullptr)
+        return;
+    b2Body *cuerpo = fcuerpo->retCuerpoBox2D();
+    cuerpo->ApplyAngularImpulse(2.0f, true);
+}
+
+void Auto::girarHaciaIzquierda()
+{
+    if (fcuerpo == nullptr)
+        return;
+    b2Body *cuerpo = fcuerpo->retCuerpoBox2D();
+    cuerpo->ApplyAngularImpulse(-2.0f, true);
+}
+
 void Auto::eliminarBalasDeMemoria()
 {
     balas.erase(std::remove_if(balas.begin(), balas.end(), [] (Bala *bala) {
@@ -199,5 +245,21 @@ void Auto::eliminarBalasDeMemoria()
                 }
                 return false;
             }), balas.end());
+}
+
+void Auto::girarHasta(int anguloDestino)
+{
+    int iangulo = (int) angulo; // Conversion a entero
+    if (anguloDestino == iangulo)
+    {
+        detenerRotacion();
+    }
+    else
+    {
+        if (iangulo < anguloDestino)
+            girarHaciaDerecha();
+        else
+            girarHaciaIzquierda();
+    }
 }
 

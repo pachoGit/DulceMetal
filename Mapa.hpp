@@ -2,7 +2,7 @@
 #define MAPA_HPP
 
 #include "Obstaculo.hpp"
-#include "Enemigo.hpp"
+#include "Equipamiento.hpp"
 
 #include <vector>
 
@@ -25,7 +25,6 @@ class ContornoMapa
 
 };
 
-
 class Mapa
 {
   public:
@@ -36,8 +35,8 @@ class Mapa
     // Los obstaculos en el mapa
     std::vector<Obstaculo *> obstaculos;
 
-    // Los enemigos en el mapa
-    std::vector<Enemigo *> enemigos;
+    // Los equipamientos en el mapa
+    std::vector<Equipamiento *> equipamientos;
 
   public:
     
@@ -48,11 +47,6 @@ class Mapa
     void actualizar(float dt);
 
     void dibujar();
-
-  private:
-    
-    void actualizarEnemigos(float dt);
-
 };
 
 #endif /* MAPA_HPP */

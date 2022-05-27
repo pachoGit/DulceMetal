@@ -21,7 +21,7 @@ class Jugador : public Auto
 
     void dibujar() override;
 
-    void disparar(/* TipoBala bala*/);
+    void disparar();
 };
 
 

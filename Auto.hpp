@@ -37,7 +37,6 @@ static const std::map<TipoAuto, InfoAuto> dataAuto =
     {AUTO_NEGRO,    {"autoNegro",    ANIM_EXPLOSION_NEGRA}}
 };
 
-
 class Auto : public Objeto
 {
   public:
@@ -71,9 +70,6 @@ class Auto : public Objeto
     // Obtener la velocidad delantera del cuerpo
     b2Vec2 retVelocidadDelantera();
 
-    // Detiene la rotacion del auto
-    void reducirRotacion();
-
     // Detiene el movimiento del auto
     void detenerAuto();
 
@@ -103,6 +99,23 @@ class Auto : public Objeto
 
     // Realizar la explosion de explotar del auto
     void explotar();
+
+    // Detiene la rotacion del auto poco a poco
+    void reducirRotacion();
+
+    // Detiene el seco la rotacion del auto
+    void detenerRotacion();
+
+    // Funciones de movimiento del auto
+    void impulsarHaciaAdelante();
+
+    void impulsarHaciaAtras();
+
+    void girarHaciaDerecha();
+
+    void girarHaciaIzquierda();
+
+    void girarHasta(int anguloDestino);
 };
 
 

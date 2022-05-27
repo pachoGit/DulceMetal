@@ -17,6 +17,8 @@
 
 #include "Enemigo.hpp"
 
+#include "Nivel.hpp"
+
 #include <iostream>
 
 int main()
@@ -32,11 +34,7 @@ int main()
     motor.retGestorSprites()->generarSprites();
     motor.retGestorSprites()->generarSpritesAnimados();
 
-    unsigned contador = 0;
-
-    Jugador *a2 = new Jugador((Vector2) {5.f, 10.f}, AUTO_VERDE, contador++);
-    //Equipamiento *eq = new Equipamiento((Vector2) {25.f, 12.f}, EQUIP_RAYO);
-    Mapa *mapa = new Mapa();
+    Nivel *nivel = new Nivel();
 
     while (!WindowShouldClose())
     {
@@ -47,23 +45,19 @@ int main()
 
         float dt = GetFrameTime();
 
-        a2->actualizar(dt);
-        mapa->actualizar(dt);
-        //eq->actualizar(dt);
-
-
-        mapa->dibujar();
-        a2->dibujar();
-        //eq->dibujar();
+        nivel->actualizar(dt);
+        nivel->dibujar();
 
         motor.retGestorFisicas()->limpiarFuerzas();
 
         EndDrawing();
     }
 
-    delete a2;
-    delete mapa;
-    //delete eq;
+    if (nivel)
+    {
+        delete nivel;
+        nivel = nullptr;
+    }
 
     motor.destruirModulos();
 

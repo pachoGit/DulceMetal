@@ -221,7 +221,7 @@ void GestorFisicas::ResolverColision_AutoConEquipamiento(Objeto *ovehiculo, Obje
     if (!equipamiento || !vehiculo)
         return;
 
-    if (!equipamiento->marcadoParaBorrar)
+    if (equipamiento->visible)
     {
         if (equipamiento->tipo == EQUIP_VIDA)
             vehiculo->vida += equipamiento->ganancia;

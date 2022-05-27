@@ -3,6 +3,13 @@
 
 #include "Auto.hpp"
 
+enum EstadoAtaque
+{
+    E_ATACANDO_BOT =     BIT(0), // Si el auto esta atacando a otro bot
+    E_ATACANDO_JUGADOR = BIT(1), // Si el auto esta atacando al jugador
+    E_ATACADO =          BIT(2)  // Si el auto esta siendo atacado por "atacante 1"
+};
+
 class Enemigo : public Auto
 {
   private:
@@ -14,6 +21,9 @@ class Enemigo : public Auto
 
     // Ultima vez desde que disparo
     int tiempoDisparo;
+
+    // El estado de ataque del enemigo
+    EstadoAtaque estadoAtaque;
 
   public:
 

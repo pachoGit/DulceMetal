@@ -67,30 +67,16 @@ void Jugador::procesarFisicas()
 {
     if (fcuerpo == nullptr)
         return;
-
-    b2Body *cuerpo = fcuerpo->retCuerpoBox2D();
     actualizarFriccion();
     // TODO: Evitar que la variable aumente a mas de 360 grados, sin utilizar SetTransform, para reiniciar el conteo del angulo
     if (IsKeyDown(KEY_D))
-        cuerpo->ApplyAngularImpulse(2.0f, true);
+        girarHaciaDerecha();
     if (IsKeyDown(KEY_A))
-        cuerpo->ApplyAngularImpulse(-2.0f, true);
-    if (IsKeyReleased(KEY_A))
-        reducirRotacion();
-
+        girarHaciaIzquierda();
     if (IsKeyDown(KEY_W))
-    {
-        float longitud = espacio.height;
-        b2Vec2 impulso(longitud * std::sin(cuerpo->GetAngle()), longitud * std::cos(cuerpo->GetAngle()) * -1);
-        cuerpo->ApplyLinearImpulse(10.0f * impulso, cuerpo->GetWorldCenter(), true);
-    }
-
+        impulsarHaciaAdelante();
     if (IsKeyDown(KEY_S))
-    {
-        float longitud = espacio.height;
-        b2Vec2 impulso(longitud * std::sin(cuerpo->GetAngle()), longitud * std::cos(cuerpo->GetAngle()) * -1);
-        cuerpo->ApplyLinearImpulse(-(10.0f * impulso), cuerpo->GetWorldCenter(), true);
-    }
+        impulsarHaciaAtras();
 }
 
 void Jugador::dibujar()

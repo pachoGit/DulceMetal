@@ -16,15 +16,34 @@ Equipamiento::Equipamiento(Vector2 _posicion, TipoEquipamiento _tipo) : Objeto(_
     animacion->enBucle = true;
     tipoClase = CLASE_EQUIPAMIENTO;
     nombre = "Equipamiento";
+    tiempoAnterior = GetTime();
 }
 
 Equipamiento::~Equipamiento()
 {
+    if (animacion)
+    {
+        delete animacion;
+        animacion = nullptr;
+    }
 }
+
+#include "Convertir.hpp"
 
 void Equipamiento::actualizar(float dt)
 {
-    Objeto::actualizar(dt);
+    if (visible)
+    {
+        Objeto::actualizar(dt);
+        tiempoAnterior = GetTime();
+        return;
+    }
+
+    int tiempoTranscurrido = GetTime() - tiempoAnterior;
+    if (tiempoTranscurrido > dataEquipamiento[tipo].tiempoNoVisible)
+        visible = true;
+    std::string t = std::to_string(tiempoTranscurrido);
+    DrawText(t.c_str(), Convertir::MetrosEnPixeles(posicion.x), Convertir::MetrosEnPixeles(posicion.y), 3, RED);
 }
 
 void Equipamiento::procesarFisicas()
@@ -33,11 +52,12 @@ void Equipamiento::procesarFisicas()
 
 void Equipamiento::dibujar()
 {
-    Objeto::dibujar();
+    if (visible)
+        Objeto::dibujar();
 }
 
 void Equipamiento::desaparecer()
 {
-    if (!marcadoParaBorrar)
-        marcadoParaBorrar = true;
+    if (visible)
+        visible = false;
 }

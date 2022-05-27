@@ -1,6 +1,7 @@
 #include "Mapa.hpp"
 #include "Config.hpp"
 #include "Convertir.hpp"
+#include "Util.hpp"
 
 #include <algorithm>
 
@@ -60,15 +61,13 @@ Mapa::Mapa()
     obstaculos.push_back(new Obstaculo({35.f, 5.f}, OBSTACULO_ARBOL));
     obstaculos.push_back(new Obstaculo({5.f, 23.f}, OBSTACULO_ARBOL));
     obstaculos.push_back(new Obstaculo({35.f, 23.f}, OBSTACULO_ARBOL));
-
     // Una carpa en medio :D
     obstaculos.push_back(new Obstaculo({20.f, 14.f}, OBSTACULO_CARPA));
 
-    // Enemigos
-    enemigos.push_back(new Enemigo({10.f, 10.f}, AUTO_AZUL, 30));
-    enemigos.push_back(new Enemigo({10.f, 18.f}, AUTO_AZUL, 29));
-    enemigos.push_back(new Enemigo({30.f, 10.f}, AUTO_AZUL, 28));
-    enemigos.push_back(new Enemigo({30.f, 18.f}, AUTO_AZUL, 27));
+    equipamientos.push_back(new Equipamiento({7.f, 7.f}, EQUIP_RAYO));
+    equipamientos.push_back(new Equipamiento({36.f, 7.f}, EQUIP_FUEGO));
+    equipamientos.push_back(new Equipamiento({7.f, 25.f}, EQUIP_VIDA));
+    equipamientos.push_back(new Equipamiento({37.f, 25.f}, EQUIP_FLOREAL));
 }
 
 Mapa::~Mapa()
@@ -84,11 +83,11 @@ Mapa::~Mapa()
             delete obstaculo;
         obstaculos.clear();
     }
-    if (enemigos.size() > 0)
+    if (equipamientos.size() > 0)
     {
-        for (auto &enemigo : enemigos)
-            delete enemigo;
-        enemigos.clear();
+        for (auto &equipamiento : equipamientos)
+            delete equipamiento;
+        equipamientos.clear();
     }
 }
 
@@ -97,7 +96,8 @@ void Mapa::actualizar(float dt)
     marco->actualizar(dt);
     for (auto &obstaculo : obstaculos)
         obstaculo->actualizar(dt);
-    actualizarEnemigos(dt);
+    for (auto &equipamiento : equipamientos)
+        equipamiento->actualizar(dt);
 }
 
 void Mapa::dibujar()
@@ -105,25 +105,6 @@ void Mapa::dibujar()
     marco->dibujar();
     for (auto &obstaculo : obstaculos)
         obstaculo->dibujar();
-    for (auto &enemigo : enemigos)
-        enemigo->dibujar();
-}
-
-void Mapa::actualizarEnemigos(float dt)
-{
-    for (auto &enemigo : enemigos)
-    {
-        enemigo->actualizar(dt);
-        if (enemigo->vida <= 0)
-            enemigo->explotar();
-    }
-
-    enemigos.erase(std::remove_if(enemigos.begin(), enemigos.end(), [] (Enemigo *enemigo) {
-                                                                            if (enemigo->marcadoParaBorrar && !enemigo->animacion->estaCorriendo)
-                                                                            {
-                                                                                delete enemigo;
-                                                                                return true;
-                                                                            }
-                                                                            return false;
-                                                                        }), enemigos.end());
+    for (auto &equipamiento : equipamientos)
+        equipamiento->dibujar();
 }

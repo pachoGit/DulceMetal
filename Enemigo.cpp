@@ -15,6 +15,7 @@ Enemigo::Enemigo(Vector2 _posicion, TipoAuto _tipo, unsigned _ID) : Auto(_posici
                                                                  FGRUPO_ENEMIGO,
                                                                  (FGrupoColision) (FGRUPO_AUTO | FGRUPO_ENEMIGO | FGRUPO_JUGADOR | FGRUPO_OBSTACULO | FGRUPO_BALA | FGRUPO_EQUIPAMIENTO));
     nombre = "Enemigo";
+    estadoAtaque = E_ATACADO;
 
     rango.x = espacio.x;
     rango.y = espacio.y;
@@ -30,7 +31,7 @@ void Enemigo::actualizar(float dt)
     
     if (resultado > 2)
     {
-        disparar();
+        //disparar();
         tiempoDisparo = GetTime();
     }
     rango.x = posicion.x;
@@ -42,7 +43,7 @@ void Enemigo::dibujar()
     rango.width = Config::RANGO_VISION_ENEMIGO;
     rango.height = Config::RANGO_VISION_ENEMIGO;
     Rectangle vrango = Convertir::MetrosEnPixeles(rango);
-    DrawRectanglePro(vrango, {vrango.width * 0.5f, vrango.height * 0.5f}, 0.f, RED);
+    //DrawRectanglePro(vrango, {vrango.width * 0.5f, vrango.height * 0.5f}, 0.f, RED);
     Auto::dibujar();
     // Dibujar el numero de idenficacion del auto
     std::string identificador = std::to_string(ID);
