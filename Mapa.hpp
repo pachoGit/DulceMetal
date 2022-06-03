@@ -1,6 +1,7 @@
 #ifndef MAPA_HPP
 #define MAPA_HPP
 
+#include "Objeto.hpp"
 #include "Obstaculo.hpp"
 #include "Equipamiento.hpp"
 
@@ -32,11 +33,9 @@ class Mapa
     // El contorno del mapa
     ContornoMapa *marco;
 
-    // Los obstaculos en el mapa
-    std::vector<Obstaculo *> obstaculos;
-
-    // Los equipamientos en el mapa
-    std::vector<Equipamiento *> equipamientos;
+    // Todos los objetos que se pueden interactuar con el mapa
+    // por el momento: obstaculos y equipamiento
+    std::vector<Objeto *> objetos;
 
   public:
     

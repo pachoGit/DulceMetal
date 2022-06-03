@@ -11,15 +11,15 @@
 
 struct NodoDistancia
 {
-    Enemigo *enemigo; // Objeto
+    Objeto *objeto; // Objeto
     float distancia;  // La distancia a la que esta el objeto
     // Color colorLinea; // Color de la linea de esta union
+    
+    inline bool operator < (const NodoDistancia &otro)
+    {
+        return ((int) distancia < (int) otro.distancia);
+    }
 };
-
-inline bool checkBanderasEstadoAtaque(EstadoAtaque estado, EstadoAtaque destino)
-{
-    return (estado & destino) > 0;
-}
 
 class GestorIA
 {
@@ -50,6 +50,28 @@ class GestorIA
 
     // Temporal: Girar todos los bots a 90 grados
     void girarEnemigos();
+
+    // Calcula el angulo al que tiene que rotar el bot, para poder llegar directamente al objeto
+    int calcularAngulo(Enemigo *enemigo, Objeto *objeto);
+
+    // Obtiene el primer objeto (mas cercano) segun el tipo, del mapa de distancias
+    Objeto *retObjeto(Enemigo *enemigo, TipoClaseObjeto tipo);
+
+    // Consulta banderas de estados al enemigo
+    inline bool checkEstadoAtaque(Enemigo *enemigo, EstadoAtaque consulta);
+
+    // Agrega banderas de estados al enemigo
+    inline void agregarEstadoAtaque(Enemigo *enemigo, EstadoAtaque nuevo);
+
+    // Elimina banderas de estados al enemigo
+    inline void quitarEstadoAtaque(Enemigo *enemigo, EstadoAtaque quitar);
+
+    // En cada paso del juego, se va a construir o mantener el estado de ataque enemigo
+    // No solo estado de ataque, si no tambien, cuando va a recoger arma por ejemplo
+    void construirEstadoDeAtaque();
+
+    // Es decir, mover y realizar las acciones de los autos hacia sus destinos :D
+    void ejecutarEstadoDeAtaque();
 
   public:
 

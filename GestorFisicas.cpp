@@ -111,8 +111,6 @@ void GestorFisicas::EndContact(b2Contact *contacto)
     // Nada por el momento
 }
 
-#include <iostream>
-
 void GestorFisicas::PreSolve(b2Contact *contacto, const b2Manifold *colector)
 {
     b2Fixture *accesorioA = contacto->GetFixtureA();
@@ -190,14 +188,18 @@ bool GestorFisicas::DeberiaColisionar_ObjetoConObjeto(b2Contact *contacto, b2Fix
     if (objetoB->esClaseEquipamiento() && (objetoA->esClaseAuto() || objetoA->esClaseEnemigo() || objetoA->esClaseJugador()))
         ResolverColision_AutoConEquipamiento(objetoA, objetoB);
 
-    return false; // Ante cualquier otra colision (bala - equipamiento, auto - equipamiento)
+    return false; // Ante cualquier otra colision (bala - equipamiento)
 }
 
 void GestorFisicas::ResolverColision_AutoConBala(Objeto *ovehiculo, Objeto *obala)
 {
     Bala *bala = ObjetoEnBala(obala);
     // La verdad es que no se por que no funciona solo convirtiendo a "Auto"
-    Auto *vehiculo = (ovehiculo->esClaseJugador() ? ObjetoEnJugador(ovehiculo) : ObjetoEnAuto(ovehiculo));
+    Auto *vehiculo = nullptr;
+    if (ovehiculo->esClaseJugador())
+        vehiculo = ObjetoEnJugador(ovehiculo);
+    if (ovehiculo->esClaseEnemigo())
+        vehiculo = ObjetoEnEnemigo(ovehiculo);
 
     // TODO: Si alguno de los 2 es null entonces hay acciones que se dejaron por alto
     // Talvez imprimir un mensaje a aqui. Pero hasta este momento ninguno los dos deberia
@@ -217,16 +219,27 @@ void GestorFisicas::ResolverColision_AutoConBala(Objeto *ovehiculo, Objeto *obal
 void GestorFisicas::ResolverColision_AutoConEquipamiento(Objeto *ovehiculo, Objeto * oequipamiento)
 {
     Equipamiento *equipamiento = ObjetoEnEquipamiento(oequipamiento);
-    Auto *vehiculo = (ovehiculo->esClaseJugador() ? ObjetoEnJugador(ovehiculo) : ObjetoEnAuto(ovehiculo));
+    Auto *vehiculo = nullptr;
+    if (ovehiculo->esClaseJugador())
+        vehiculo = ObjetoEnJugador(ovehiculo);
+    if (ovehiculo->esClaseEnemigo())
+        vehiculo = ObjetoEnEnemigo(ovehiculo);
     if (!equipamiento || !vehiculo)
         return;
 
     if (equipamiento->visible)
     {
         if (equipamiento->tipo == EQUIP_VIDA)
-            vehiculo->vida += equipamiento->ganancia;
+        {
+            if (vehiculo->vida + equipamiento->ganancia > Config::MAX_VIDA)
+                vehiculo->vida = Config::MAX_VIDA;
+            else
+                vehiculo->vida += equipamiento->ganancia;
+        }
         else
+        {
             vehiculo->inventario->ingresar(equipamiento->tipoBala, equipamiento->ganancia);
+        }
         equipamiento->desaparecer(); // Desaparecer
     }
 }

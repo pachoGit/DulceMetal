@@ -20,6 +20,7 @@ Jugador::Jugador(Vector2 _posicion, TipoAuto _tipo, unsigned _ID) : Auto(_posici
                                                                  FGRUPO_JUGADOR,
                                                                  (FGrupoColision) (FGRUPO_AUTO | FGRUPO_ENEMIGO | FGRUPO_OBSTACULO | FGRUPO_BALA | FGRUPO_EQUIPAMIENTO));
     nombre = "Jugador";
+    estadoAtaque = J_NOATACADO;
 }
 
 Jugador::~Jugador()
@@ -33,10 +34,19 @@ void Jugador::actualizar(float dt)
     sincronizarObjetoConFisicas();
     actualizarBarraVida();
 
-    if (IsKeyPressed(KEY_SPACE) && !inventario->estaVacio())
+    // Manejo del inventario
+    if (!inventario->estaVacio())
     {
-        tipoBala = inventario->retActual()->tipoBala;
-        disparar();
+        if (IsKeyPressed(KEY_Q))
+            inventario->retroceder();
+        if (IsKeyPressed(KEY_E))
+            inventario->avanzar();
+
+        if (IsKeyPressed(KEY_SPACE))
+        {
+            tipoBala = inventario->retActual()->tipoBala;
+            disparar();
+        }
     }
 
     if (IsKeyPressed(KEY_LEFT_SHIFT))
@@ -53,12 +63,6 @@ void Jugador::actualizar(float dt)
         for (auto &bala : balas)
             bala->explotar();
     }
-    
-    // Manejo del inventario
-    if (IsKeyPressed(KEY_Q) && !inventario->estaVacio())
-            inventario->retroceder();
-    if (IsKeyPressed(KEY_E) && !inventario->estaVacio())
-            inventario->avanzar();
 
     eliminarBalasDeMemoria();
 }
@@ -85,7 +89,7 @@ void Jugador::dibujar()
     if (!inventario->estaVacio())
     {
         std::string nbalas = std::to_string(inventario->retActual()->cantidad);
-        Vector2 ptexto = Convertir::MetrosEnPixeles((Vector2) {30.f, 15.f});
+        Vector2 ptexto = Convertir::MetrosEnPixeles((Vector2) {posicion.x, posicion.y + 1});
         DrawText(nbalas.c_str(), ptexto.x, ptexto.y, 2, RED);
     }
 }

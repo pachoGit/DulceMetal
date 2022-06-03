@@ -28,8 +28,9 @@ void BarraVida::dibujar()
     espacio.y = posicion.y;
     int ancho = (anchoPintado * Config::DIM_BARRAVIDA.x) / Config::MAX_VIDA;
     Rectangle rvidaActual = {espacio.x, espacio.y, ancho, espacio.height};
+    Color color = (ancho <= 6 ? RED : BLUE); // Si esta menor al 20% de la vida, pintar de rojo
     // Dibujamos la barra de vida
-    DrawRectangleRec(rvidaActual, BLUE);
+    DrawRectangleRec(rvidaActual, color);
     // Dibujamos el contorno de la vida
     DrawRectangleLinesEx(espacio, 1, GREEN);
 }

@@ -57,17 +57,18 @@ Mapa::Mapa()
     marco = new ContornoMapa(OBSTACULO_MURO_GRIS_RACE);
     
     // Algunos arboles
-    obstaculos.push_back(new Obstaculo({5.f, 5.f}, OBSTACULO_ARBOL));
-    obstaculos.push_back(new Obstaculo({35.f, 5.f}, OBSTACULO_ARBOL));
-    obstaculos.push_back(new Obstaculo({5.f, 23.f}, OBSTACULO_ARBOL));
-    obstaculos.push_back(new Obstaculo({35.f, 23.f}, OBSTACULO_ARBOL));
+    objetos.push_back(new Obstaculo({5.f, 5.f}, OBSTACULO_ARBOL));
+    objetos.push_back(new Obstaculo({35.f, 5.f}, OBSTACULO_ARBOL));
+    objetos.push_back(new Obstaculo({5.f, 23.f}, OBSTACULO_ARBOL));
+    objetos.push_back(new Obstaculo({35.f, 23.f}, OBSTACULO_ARBOL));
     // Una carpa en medio :D
-    obstaculos.push_back(new Obstaculo({20.f, 14.f}, OBSTACULO_CARPA));
+    objetos.push_back(new Obstaculo({20.f, 14.f}, OBSTACULO_CARPA));
 
-    equipamientos.push_back(new Equipamiento({7.f, 7.f}, EQUIP_RAYO));
-    equipamientos.push_back(new Equipamiento({36.f, 7.f}, EQUIP_FUEGO));
-    equipamientos.push_back(new Equipamiento({7.f, 25.f}, EQUIP_VIDA));
-    equipamientos.push_back(new Equipamiento({37.f, 25.f}, EQUIP_FLOREAL));
+    // Algunos equipamientos
+    objetos.push_back(new Equipamiento({7.f, 7.f}, EQUIP_RAYO));
+    objetos.push_back(new Equipamiento({36.f, 7.f}, EQUIP_FUEGO));
+    objetos.push_back(new Equipamiento({7.f, 25.f}, EQUIP_VIDA));
+    objetos.push_back(new Equipamiento({37.f, 25.f}, EQUIP_FLOREAL));
 }
 
 Mapa::~Mapa()
@@ -77,34 +78,24 @@ Mapa::~Mapa()
         delete marco;
         marco = nullptr;
     }
-    if (obstaculos.size() > 0)
+    if (objetos.size() > 0)
     {
-        for (auto &obstaculo : obstaculos)
-            delete obstaculo;
-        obstaculos.clear();
-    }
-    if (equipamientos.size() > 0)
-    {
-        for (auto &equipamiento : equipamientos)
-            delete equipamiento;
-        equipamientos.clear();
+        for (auto &objeto : objetos)
+            delete objeto;
+        objetos.clear();
     }
 }
 
 void Mapa::actualizar(float dt)
 {
     marco->actualizar(dt);
-    for (auto &obstaculo : obstaculos)
-        obstaculo->actualizar(dt);
-    for (auto &equipamiento : equipamientos)
-        equipamiento->actualizar(dt);
+    for (auto &objeto : objetos)
+        objeto->actualizar(dt);
 }
 
 void Mapa::dibujar()
 {
     marco->dibujar();
-    for (auto &obstaculo : obstaculos)
-        obstaculo->dibujar();
-    for (auto &equipamiento : equipamientos)
-        equipamiento->dibujar();
+    for (auto &objeto : objetos)
+        objeto->dibujar();
 }

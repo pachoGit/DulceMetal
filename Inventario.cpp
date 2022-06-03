@@ -34,14 +34,7 @@ void Inventario::ingresar(TipoBala tipo, int cantidad)
 
 void Inventario::remover(Arma *arma)
 {
-    armas.erase(std::remove_if(armas.begin(), armas.end(), [&] (Arma *a) {
-                                                               if (a->tipoBala == arma->tipoBala)
-                                                               {
-                                                                   delete a;
-                                                                   return true;
-                                                               }
-                                                               return false;
-                                                           }), armas.end());
+    armas.erase(std::remove(armas.begin(), armas.end(), arma), armas.end());
 }
 
 void Inventario::remover(TipoBala tipo)
@@ -88,6 +81,10 @@ void Inventario::disminuir(TipoBala tipo, int cantidad)
             if (arma->cantidad <= 0)
             {
                 remover(arma);
+                if (estaVacio())
+                    actual = 0;
+                else
+                    retroceder();
                 break;
             }
         }
