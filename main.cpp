@@ -14,9 +14,7 @@
 #include "Animacion.hpp"
 #include "Equipamiento.hpp"
 #include "Mapa.hpp"
-
 #include "Enemigo.hpp"
-
 #include "Nivel.hpp"
 
 #include <iostream>
@@ -34,7 +32,7 @@ int main()
     motor.retGestorSprites()->generarSprites();
     motor.retGestorSprites()->generarSpritesAnimados();
 
-    Nivel *nivel = new Nivel();
+    Nivel *nivel = new Nivel(1);
 
     while (!WindowShouldClose())
     {

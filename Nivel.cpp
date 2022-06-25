@@ -4,11 +4,12 @@
 
 #include <algorithm>
 
-Nivel::Nivel()
+Nivel::Nivel(int _nivel)
 {
+    nivel = _nivel;
     estaCorriendo = true;
-    mapa = new Mapa();
-    jugador = new Jugador((Vector2) {5.f, 10.f}, AUTO_VERDE, 0);
+    mapa = new Mapa(nivel);
+    jugador = new Jugador(dataJugador.at(1), AUTO_VERDE, 0);
     gbots = new GestorIA(jugador, mapa);
 }
 

@@ -48,13 +48,13 @@ void Enemigo::dibujar()
     Auto::dibujar();
     // Dibujar el numero de idenficacion del auto
     std::string identificador = std::to_string(ID);
-    DrawText(identificador.c_str(), Convertir::MetrosEnPixeles(espacio.x), Convertir::MetrosEnPixeles(espacio.y), 5, BLACK);
+    DrawText(identificador.c_str(), Convertir::MetrosEnPixeles(espacio.x), Convertir::MetrosEnPixeles(espacio.y), 15, BLACK);
 
     if (!inventario->estaVacio())
     {
         std::string nbalas = std::to_string(inventario->retActual()->cantidad);
         Vector2 ptexto = Convertir::MetrosEnPixeles((Vector2) {posicion.x, posicion.y + 1});
-        DrawText(nbalas.c_str(), ptexto.x, ptexto.y, 2, RED);
+        DrawText(nbalas.c_str(), ptexto.x, ptexto.y, 12, RED);
     }
 }
 

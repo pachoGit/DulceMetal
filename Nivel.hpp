@@ -10,6 +10,12 @@
 #include <utility> // Para std::pair
 #include <vector>
 
+// Informacion sobre la posicion del jugador en cada nivel
+static std::map<unsigned, Vector2> dataJugador =
+{
+    {1, {3.f, 15.f}}
+};
+
 class Nivel
 {
   private:
@@ -23,13 +29,16 @@ class Nivel
     // Gestor de los bots
     GestorIA *gbots;
 
+    // El nivel que se esta jugando
+    int nivel;
+
   public:
 
     bool estaCorriendo;
 
   public:
 
-    Nivel();
+    Nivel(int _nivel);
 
     ~Nivel();
 

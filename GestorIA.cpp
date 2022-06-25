@@ -2,17 +2,17 @@
 #include "Convertir.hpp"
 #include "Util.hpp"
 #include "ObjetoAyudas.hpp"
+#include "Motor.hpp"
 
 #include <string>
 #include <algorithm>
 
 GestorIA::GestorIA(Jugador *_jugador, Mapa *_mapa) : MapaDistancias{}, jugador(_jugador), mapa(_mapa)
 {
-    unsigned contador = 1; // El auto "0" es el jugador
-    enemigos.push_back(new Enemigo({10.f, 10.f}, AUTO_AZUL, contador++));
-    enemigos.push_back(new Enemigo({10.f, 18.f}, AUTO_AZUL, contador++));
-    enemigos.push_back(new Enemigo({30.f, 10.f}, AUTO_AZUL, contador++));
-    enemigos.push_back(new Enemigo({30.f, 18.f}, AUTO_AZUL, contador++));
+    cargarInfo();
+    unsigned iauto = 1;
+    for (auto &enemigo : dataEnemigo.at(_mapa->nivel))
+        enemigos.push_back(new Enemigo(enemigo.posicion, enemigo.tauto, iauto++));
 }
 
 GestorIA::~GestorIA()
@@ -20,7 +20,10 @@ GestorIA::~GestorIA()
     if (enemigos.size() > 0)
     {
         for (auto &enemigo : enemigos)
+        {
             delete enemigo;
+            enemigo = nullptr;
+        }
         enemigos.clear();
     }
     MapaDistancias.clear();
@@ -30,14 +33,35 @@ void GestorIA::actualizar(float dt)
 {
     contruirMapaDistancias();
     actualizarEnemigos(dt);
+    enemigos.erase(std::remove_if(enemigos.begin(), enemigos.end(), [](Enemigo *e) {
+                                                                        if (e->marcadoParaBorrar && !e->animacion->estaCorriendo)
+                                                                        {
+                                                                            delete e;
+                                                                            return true;
+                                                                        }
+                                                                        return false;
+                                                                    }), enemigos.end());
 }
 
 void GestorIA::dibujar()
 {
+    auto calcularRayo = [&] (const Enemigo *enemigo) {
+                            Vector2 inicio = enemigo->posicion;
+                            Vector2 fin = {enemigo->posicion.x + 5.0f, enemigo->posicion.y + 5.0f};
+                            return std::make_pair(Convertir::MetrosEnPixeles(inicio), Convertir::MetrosEnPixeles(fin));
+                        };
+
     for (auto &enemigo : enemigos)
+    {
         enemigo->dibujar();
+        auto puntos = calcularRayo(enemigo);
+        //DrawLineV(puntos.first, puntos.second, RED);
+    }
     dibujarMapaDistancias();
 }
+
+
+#include <utility>
 
 void GestorIA::actualizarEnemigos(float dt)
 {
@@ -47,19 +71,9 @@ void GestorIA::actualizarEnemigos(float dt)
         if (enemigo->vida <= 0)
             enemigo->explotar();
     }
-
     //girarEnemigos();
     construirEstadoDeAtaque();
     ejecutarEstadoDeAtaque();
-
-    enemigos.erase(std::remove_if(enemigos.begin(), enemigos.end(), [] (Enemigo *enemigo) {
-                                                                        if (enemigo->marcadoParaBorrar && !enemigo->animacion->estaCorriendo)
-                                                                        {
-                                                                            delete enemigo;
-                                                                            return true;
-                                                                        }
-                                                                        return false;
-                                                                    }), enemigos.end());
 }
 
 void GestorIA::contruirMapaDistancias()
@@ -83,7 +97,7 @@ void GestorIA::contruirMapaDistancias()
 
         // Ordenamos las distancias
         std::sort(dactual.begin(), dactual.end());
-        MapaDistancias[/*enemigos.at(i)*/actual] = std::move(dactual);
+        MapaDistancias[actual] = std::move(dactual);
     }
 }
 
@@ -104,9 +118,11 @@ void GestorIA::dibujarMapaDistancias() const
             cadena.append(", ");
             cadena.append(std::to_string(static_cast<int>(distancia.distancia)));
             cadena.append("]");
-            DrawLineV(Convertir::MetrosEnPixeles(enemigo->posicion), Convertir::MetrosEnPixeles(otro->posicion), BLUE);
+            // Dibujar la linea que une al enemigo con el resto de enemigos
+            //DrawLineV(Convertir::MetrosEnPixeles(enemigo->posicion), Convertir::MetrosEnPixeles(otro->posicion), BLUE);
         }
-        DrawText(cadena.c_str(), Convertir::MetrosEnPixeles(enemigo->espacio.x), Convertir::MetrosEnPixeles(enemigo->espacio.y) + 10, 5, BLACK);
+        // Dibujar las distancias que les une con el resto de enemigos
+        //DrawText(cadena.c_str(), Convertir::MetrosEnPixeles(enemigo->espacio.x), Convertir::MetrosEnPixeles(enemigo->espacio.y) + 10, 5, BLACK);
     }
 }
 
@@ -177,53 +193,37 @@ void GestorIA::construirEstadoDeAtaque()
         {
             agregarEstadoAtaque(enemigo, E_RECARGANDO);
             quitarEstadoAtaque(enemigo, E_NADA);
-            continue;
         }
         else
         {
-            quitarEstadoAtaque(enemigo, E_RECARGANDO);
-        }
-        if (jugador->checkEstadoAtaque(J_NOATACADO))
-        {
-            if (jugador->checkEstadoAtaque((JAtaque) (J_ATACADO_1 | J_ATACADO_2)))
+            if (jugador->checkEstadoAtaque(J_NOATACADO))
             {
-                agregarEstadoAtaque(enemigo, E_ATACANDO_BOT);
+                agregarEstadoAtaque(enemigo, E_ATACANDO_JUGADOR);
+                quitarEstadoAtaque(enemigo, E_RECARGANDO);
+                quitarEstadoAtaque(enemigo, E_NADA);
+                jugador->agregarEstadoAtaque(J_ATACADO_1);
             }
             else
             {
-                agregarEstadoAtaque(enemigo, E_ATACANDO_JUGADOR);
-                if (jugador->checkEstadoAtaque(J_ATACADO_1))
-                    jugador->agregarEstadoAtaque(J_ATACADO_2);
+                if (jugador->checkEstadoAtaque(J_ATACADO_1) && jugador->checkEstadoAtaque(J_ATACADO_2))
+                {
+                    // Ir hacia bot
+                    agregarEstadoAtaque(enemigo, E_ATACANDO_BOT);
+                    quitarEstadoAtaque(enemigo, E_RECARGANDO);
+                    quitarEstadoAtaque(enemigo, E_ATACANDO_JUGADOR);
+                }
                 else
-                    jugador->agregarEstadoAtaque(J_ATACADO_1);
-                jugador->quitarEstadoAtaque(J_NOATACADO);
+                {
+                    agregarEstadoAtaque(enemigo, E_ATACANDO_JUGADOR);
+                    quitarEstadoAtaque(enemigo, E_RECARGANDO);
+                    quitarEstadoAtaque(enemigo, E_NADA);
+                    if (jugador->checkEstadoAtaque(J_ATACADO_1))
+                        jugador->agregarEstadoAtaque(J_ATACADO_2);
+                    else
+                        jugador->agregarEstadoAtaque(J_ATACADO_1);
+                }
             }
-            quitarEstadoAtaque(enemigo, E_NADA);
-            continue;
         }
-        if (enemigo->checkEstadoAtaque(E_ATACANDO_JUGADOR) || enemigo->checkEstadoAtaque(E_ATACANDO_BOT))
-            continue;
-        
-        /*
-        else
-        {
-            if (jugador->checkEstadoAtaque((JAtaque) (J_ATACADO_1 | J_ATACADO_2)))
-            {
-                agregarEstadoAtaque(enemigo, E_ATACANDO_BOT);
-            }
-            else
-            {
-                agregarEstadoAtaque(enemigo, E_ATACANDO_JUGADOR);
-                if (jugador->checkEstadoAtaque(J_ATACADO_1))
-                    jugador->agregarEstadoAtaque(J_ATACADO_2);
-                else
-                    jugador->agregarEstadoAtaque(J_ATACADO_1);
-                jugador->quitarEstadoAtaque(J_NOATACADO);
-            }
-            quitarEstadoAtaque(enemigo, E_NADA);
-            continue;
-        }
-        */
     }
 }
 
@@ -264,4 +264,18 @@ void GestorIA::ejecutarEstadoDeAtaque()
             continue;
         }
     }
+}
+
+void GestorIA::cargarInfo()
+{
+    std::vector<infoEnemigo> info;
+    
+    info = {
+        {AUTO_NARANJA,  {11.f, 5.f}},
+        {AUTO_AZUL,     {27.f, 5.f}},
+        {AUTO_AMARILLO, {11.f, 21.f}},
+        {AUTO_NEGRO,    {27.f, 21.f}}
+    };
+
+    dataEnemigo[1] = std::move(info);
 }

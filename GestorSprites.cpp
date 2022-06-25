@@ -161,6 +161,11 @@ void GestorSprites::generarSprites()
     insertar((Rectangle) {40.f,  200.f, 40.f, 40.f}, "vida2", trecogibles);
     insertar((Rectangle) {80.f,  200.f, 40.f, 40.f}, "vida3", trecogibles);
     insertar((Rectangle) {120.f, 200.f, 40.f, 40.f}, "vida4", trecogibles);
+
+    // Mapa 1
+    Texture2D tmapa1 = Motor::retMotor().retGestorTexturas()->retTextura("mapa1");
+    insertar((Rectangle) {0.f, 0.f, 1200.f, 900.f}, "mapa1", tmapa1);
+
 }
 
 void GestorSprites::generarSpritesAnimados()

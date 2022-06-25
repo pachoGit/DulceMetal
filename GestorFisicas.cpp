@@ -148,6 +148,12 @@ void GestorFisicas::PostSolve(b2Contact *contacto, const b2ContactImpulse *impul
     // Nada por el momento
 }
 
+MiRayCast &GestorFisicas::rayCast(const b2Vec2 &inicio, const b2Vec2 &fin)
+{
+    mundoBox2D->RayCast(&raycast, inicio, fin);
+    return raycast;
+}
+
 bool GestorFisicas::DeberiaColisionar_ObstaculoConObjeto(b2Contact *contacto, b2Fixture *obstaculoAccesorio, b2Fixture *objetoAccesorio)
 {
     Objeto *objeto = retObjetoDeFixture(objetoAccesorio);

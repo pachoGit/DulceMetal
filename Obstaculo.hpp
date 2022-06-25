@@ -18,15 +18,15 @@ enum TipoObstaculo
     OBSTACULO_ARBOL
 };
 
-static std::map<TipoObstaculo, std::pair<std::string, Vector2>> dataObstaculo =
+static std::map<TipoObstaculo, std::string> dataObstaculo =
 {
-    {OBSTACULO_MURO_GRIS_PURO,    {"muroGris",        Config::DIM_MURO}},
-    {OBSTACULO_MURO_GRIS_RACE,    {"muroGrisRace",    Config::DIM_MURO}},
-    {OBSTACULO_MURO_NARANJA_PURO, {"muroNaranja",     Config::DIM_MURO}},
-    {OBSTACULO_MURO_NARANJA_RACE, {"muroNaranjaRace", Config::DIM_MURO}},
-    {OBSTACULO_CONO,              {"cono",            Config::DIM_CONO}},
-    {OBSTACULO_CARPA,             {"carpa",           Config::DIM_CARPA}},
-    {OBSTACULO_ARBOL,             {"arbol",           Config::DIM_ARBOL}}
+    {OBSTACULO_MURO_GRIS_PURO,    "muroGris"},
+    {OBSTACULO_MURO_GRIS_RACE,    "muroGrisRace"},
+    {OBSTACULO_MURO_NARANJA_PURO, "muroNaranja"},
+    {OBSTACULO_MURO_NARANJA_RACE, "muroNaranjaRace"},
+    {OBSTACULO_CONO,              "cono"},
+    {OBSTACULO_CARPA,             "carpa"},
+    {OBSTACULO_ARBOL,             "arbol"}
 };
     
 
@@ -34,7 +34,7 @@ class Obstaculo : public Objeto
 {
   public:
     
-    Obstaculo(Vector2 _posicion, TipoObstaculo tipo);
+    Obstaculo(Vector2 _posicion, TipoObstaculo tipo, Vector2 _tam = Config::DIM_MURO);
 
     ~Obstaculo();
 

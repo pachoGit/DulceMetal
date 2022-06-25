@@ -4,12 +4,12 @@
 
 #include <iostream>
 
-Obstaculo::Obstaculo(Vector2 _posicion, TipoObstaculo tipo) : Objeto(_posicion)
+Obstaculo::Obstaculo(Vector2 _posicion, TipoObstaculo tipo, Vector2 _tam) : Objeto(_posicion)
 {
     auto info = dataObstaculo[tipo];
-    espacio.width =  info.second.x;
-    espacio.height = info.second.y;
-    sprite = Motor::retMotor().retGestorSprites()->retSprite(info.first);
+    espacio.width =  _tam.x;
+    espacio.height = _tam.y;
+    sprite = Motor::retMotor().retGestorSprites()->retSprite(info);
     tipoClase = CLASE_OBSTACULO;
     fcuerpo = Motor::retMotor().retGestorFisicas()->crearFCuerpo(this,
                                                                  FCUERPO_ESTATICO,
@@ -34,8 +34,4 @@ void Obstaculo::procesarFisicas()
 void Obstaculo::dibujar()
 {
     Objeto::dibujar();
-    /*
-    if (fcuerpo)
-        fcuerpo->dibujar();
-    */
 }

@@ -21,6 +21,15 @@ struct NodoDistancia
     }
 };
 
+struct infoEnemigo
+{
+    TipoAuto tauto;
+    Vector2 posicion;
+};
+
+// Informacion sobre los enemigos en cada nivel
+static std::map<unsigned, std::vector<infoEnemigo>> dataEnemigo;
+
 class GestorIA
 {
   private:
@@ -72,6 +81,9 @@ class GestorIA
 
     // Es decir, mover y realizar las acciones de los autos hacia sus destinos :D
     void ejecutarEstadoDeAtaque();
+
+    // Cargar la info de los enemigos
+    void cargarInfo();
 
   public:
 

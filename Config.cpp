@@ -2,7 +2,7 @@
 
 float Config::PIXELES_POR_METRO = 30.f;
 
-Vector2 Config::DIM_VENTANA = {40.0f, 28.0f};
+Vector2 Config::DIM_VENTANA = {41.0f, 31.0f};
 
 Vector2 Config::DIM_OBJETO = {1.0f, 1.0f};
 
@@ -15,11 +15,11 @@ Vector2 Config::DIM_BALA_NORMAL = {0.20f, 0.23f};
 
 Vector2 Config::DIM_MURO = {5.0f, 1.0f};
 
-Vector2 Config::DIM_CARPA = {1.5f, 1.5f};
+Vector2 Config::DIM_CARPA = {2.0f, 2.0f};
 
-Vector2 Config::DIM_CONO = {0.8f, 0.8f};
+Vector2 Config::DIM_CONO = {1.f, 1.f};
 
-Vector2 Config::DIM_ARBOL = {1.2f, 1.2f};
+Vector2 Config::DIM_ARBOL = {2.0f, 2.0f};
 
 //Vector2 Config::DIM_BLOQUEMAPA = {1.f, 5.f};
 
